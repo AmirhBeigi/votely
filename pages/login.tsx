@@ -9,10 +9,21 @@ import { CloseEyeIcon, GoogleIcon, OpenEyeIcon } from "../components/icons";
 import { HandingKey } from "../components/illustrations";
 import Heeader from "../components/organisms/Header";
 import { useRouter } from "next/router";
+import { useLogin } from "../apis/auth/login/hook";
 
 const Login: NextPage = () => {
   const router = useRouter();
+  const login = useLogin();
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
   const [shouldShowPassword, setShouldShowPassword] = useState(false);
+
+  const handleLogin = async () => {
+    try {
+      const { data: userData } = await login.mutateAsync({ identifier, password });
+      router.push("/");
+    } catch (e) {}
+  };
 
   const handleShowPassword = () => {
     setShouldShowPassword(!shouldShowPassword);
@@ -29,16 +40,15 @@ const Login: NextPage = () => {
       <Heeader />
       <main className="pt-10 flex flex-col items-center w-full justify-between flex-1">
         <Box className="w-full flex flex-col items-center">
-        <Box className="w-full flex justify-center items-center h-40">
-
-          <HandingKey color="#000" />
-          </Box>  
+          <Box className="w-full flex justify-center items-center h-40">
+            <HandingKey color="#000" />
+          </Box>
           <Box className="flex flex-col w-full space-y-4 mt-10">
             <Box className="w-full space-y-2">
               <Text fontWeight="medium" fontSize="sm">
                 Username or Email
               </Text>
-              <TextField />
+              <TextField onChange={(e) => setIdentifier(e.target.value)} value={identifier} />
             </Box>
             <Box className="w-full space-y-2">
               <Text fontWeight="medium" fontSize="sm">
@@ -46,6 +56,8 @@ const Login: NextPage = () => {
               </Text>
               <TextField
                 type={shouldShowPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 afterElement={
                   shouldShowPassword ? (
                     <CloseEyeIcon color="#000" onClick={handleShowPassword} />
@@ -55,7 +67,7 @@ const Login: NextPage = () => {
                 }
               />
             </Box>
-            <Button>Login</Button>
+            <Button onClick={handleLogin}>Login</Button>
           </Box>
         </Box>
         <Box className="flex flex-col space-y-3 w-full">
