@@ -3,8 +3,16 @@ import Head from "next/head";
 import TextField from "../components/atom/TextField";
 import { SearchIcon } from "../components/icons";
 import Heeader from "../components/organisms/Header";
+import ActiveVoteBanner from "../components/organisms/ActiveVoteBanner";
+import Section from "../components/molecules/Section";
+import Box from "../components/atom/Box";
+import Text from "../components/atom/Text";
+import { useRouter } from "next/router";
+import VoteCard from "../components/organisms/VoteCard";
+import NavigationBar from "../components/organisms/NavigationBar";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   return (
     <div className="container mx-auto p-8">
       <Head>
@@ -14,8 +22,25 @@ const Home: NextPage = () => {
       </Head>
 
       <Heeader />
-      <main className="pt-5">
+      <main className="pt-5 space-y-5">
         <TextField placeholder="Search polls ..." beforElement={<SearchIcon color="#283138" />} />
+        <ActiveVoteBanner count={1} />
+        <Section title="Top Categories" showAllAction={() => router.push("/tags")}>
+          <Box className="flex items-center space-x-5">
+            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
+            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
+            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
+          </Box>
+        </Section>
+        <Section title="Recent Votes">
+          <Box className="flex flex-col space-y-5 ">
+            <VoteCard />
+            <VoteCard />
+            <VoteCard />
+            <VoteCard />
+          </Box>
+        </Section>
+        <NavigationBar />
       </main>
     </div>
   );

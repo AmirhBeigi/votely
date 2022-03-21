@@ -5,7 +5,7 @@ export const Heeader: React.FC = () => {
   return (
     <Box>
       <Text as="h1" fontWeight="extraBold" fontSize="xl">
-        POLLY
+        VOTELY
       </Text>
     </Box>
   );

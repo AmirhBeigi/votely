@@ -10,7 +10,7 @@ import { CloseEyeIcon, GoogleIcon, OpenEyeIcon } from "../components/icons";
 import { Handshake } from "../components/illustrations";
 import Heeader from "../components/organisms/Header";
 
-const Login: NextPage = () => {
+const Register: NextPage = () => {
   const router = useRouter();
   const [shouldShowPassword, setShouldShowPassword] = useState(false);
 
@@ -88,4 +88,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default Register;

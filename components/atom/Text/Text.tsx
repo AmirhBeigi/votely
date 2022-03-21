@@ -66,13 +66,13 @@ const textStyles = {
 };
 
 export const Text: React.FC<TextProps> = (props) => {
-  const { fontSize = "base", fontWeight = "normal", as = "span", ...rest } = props;
+  const { fontSize = "base", fontWeight = "normal", as = "span", className, ...rest } = props;
 
   const RootNode = as;
 
   return (
     <RootNode
-      className={clsx(textStyles.size[fontSize], textStyles.weight[fontWeight])}
+      className={clsx(className, textStyles.size[fontSize], textStyles.weight[fontWeight])}
       {...rest}
     />
   );
