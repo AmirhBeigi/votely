@@ -8,7 +8,7 @@ interface TextFieldProps extends NativeDomProps<HTMLInputElement> {
 export const TextField: React.FC<TextFieldProps> = (props) => {
   const { beforElement, afterElement, ...inputProps } = props;
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {beforElement && (
         <div className="h-14 w-14 absolute top-0 left-0 flex justify-center items-center">
           {beforElement}

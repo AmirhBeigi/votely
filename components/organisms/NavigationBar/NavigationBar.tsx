@@ -1,12 +1,22 @@
+import clsx from "clsx";
+import { useRouter } from "next/router";
 import Box from "../../atom/Box";
 import Text from "../../atom/Text";
 import { PlusIcon } from "../../icons";
 
 export const NavigationBar: React.FC = () => {
+  const router = useRouter();
+  const isActiveCheck = ({href,exact}: {href:string,exact?:boolean}): boolean =>exact ? router.pathname === href :  router.pathname.startsWith(href);
+
   return (
-    <Box className="fixed bottom-0 left-0 h-[4.3rem] w-full px-7 pr-8 bg-white flex justify-between shadow-2xl">
+    <Box className="fixed bottom-0 left-0 min-h-[4.3rem] h-[4.3rem] w-full px-7 pr-8 bg-white flex justify-between shadow-[0_-30px_65px_-18px_rgba(0,0,0,0.2)] lg:hidden">
       <Box className="flex space-x-8">
-        <Box className="flex items-center space-x-2">
+        <Box
+          className={clsx("flex items-center space-x-2 opacity-50", {
+            "!opacity-100": isActiveCheck({href:"/",exact:true}),
+          })}
+          onClick={() => router.push("/")}
+        >
           <svg
             width="31"
             height="31"
@@ -27,7 +37,12 @@ export const NavigationBar: React.FC = () => {
             Home
           </Text>
         </Box>
-        <Box className="flex items-center space-x-2">
+        <Box
+          className={clsx("flex items-center space-x-2 opacity-50", {
+            "!opacity-100": isActiveCheck({href:"/tags"}),
+          })}
+          onClick={() => router.push("/tags")}
+        >
           <svg
             width="31"
             height="31"
@@ -59,7 +74,10 @@ export const NavigationBar: React.FC = () => {
           </Text>
         </Box>
       </Box>
-      <Box className="h-16 w-16 -mt-4 flex justify-center items-center bg-black rounded-xl shadow-[0_15px_41px_0_rgba(53,62,69,0.5)]">
+      <Box
+        onClick={() => router.push("/new")}
+        className="h-16 w-16 -mt-4 flex justify-center items-center bg-black rounded-xl shadow-[0_15px_41px_0_rgba(53,62,69,0.5)]"
+      >
         <PlusIcon color="#fff" />
       </Box>
     </Box>

@@ -12,7 +12,7 @@ export const Section: React.FC<SectionProps> = (props) => {
   return (
     <Box className="flex flex-col space-y-3">
       <Box className="flex justify-between items-center">
-        <Text fontWeight="bold" fontSize="lg">
+        <Text fontWeight="semiBold" fontSize="lg">
           {title}
         </Text>
         {!!showAllAction && (

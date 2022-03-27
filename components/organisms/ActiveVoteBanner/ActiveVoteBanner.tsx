@@ -11,9 +11,7 @@ export const ActiveVoteBanner: React.FC<ActiveVoteBannerProps> = (props) => {
   return (
     <Box className="flex justify-between items-center bg-black text-white p-5 rounded-lg">
       <Box className="flex flex-col space-y-1">
-        <Text fontWeight="bold" fontSize="lg">
-          {count} active vote
-        </Text>
+        <Text fontWeight="medium">{count} Active poll</Text>
         <Text fontSize="sm" className="text-white text-opacity-60">
           Show details
         </Text>

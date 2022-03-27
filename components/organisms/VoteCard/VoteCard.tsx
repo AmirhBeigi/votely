@@ -1,13 +1,30 @@
+import { useRouter } from "next/router";
 import Box from "../../atom/Box";
 import Button from "../../atom/Button";
 import Text from "../../atom/Text";
 
-interface VoteCardProps {}
+interface VoteCardProps {
+  title: string;
+  votesCount: number;
+  optionsCount: number;
+  identifier: string | number;
+}
 
-export const VoteCard: React.FC<VoteCardProps> = (props) => {
+export const VoteCard: React.FC<VoteCardProps> = ({
+  title,
+  votesCount,
+  optionsCount,
+  identifier,
+}) => {
+  const router = useRouter();
   return (
-    <Box className="flex flex-col space-y-3 bg-[#F0F3F4] w-full p-5 rounded-lg">
-      <Text fontWeight="medium">What is the best Iranian food?</Text>
+    <Box
+      className="flex flex-col space-y-3 bg-[#F0F3F4] w-full p-5 rounded-lg"
+      onClick={() => router.push(`/p/${identifier}`)}
+    >
+      <Text fontWeight="medium" dir="auto">
+        {title}
+      </Text>
       <Box className="flex items-center space-x-4">
         <Box className="flex items-center space-x-1">
           <svg
@@ -25,7 +42,7 @@ export const VoteCard: React.FC<VoteCardProps> = (props) => {
             />
           </svg>
           <Text fontSize="sm" fontWeight="medium">
-            20 People
+            {votesCount} People
           </Text>
         </Box>
         <Box className="flex items-center space-x-1">
@@ -44,7 +61,7 @@ export const VoteCard: React.FC<VoteCardProps> = (props) => {
             />
           </svg>
           <Text fontSize="sm" fontWeight="medium">
-            4 Options
+            {optionsCount} Options
           </Text>
         </Box>
       </Box>
