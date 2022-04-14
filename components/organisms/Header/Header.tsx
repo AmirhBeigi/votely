@@ -35,7 +35,7 @@ export const Heeader: React.FC = () => {
           VOTELY
         </Text>
         <Box
-          className={clsx('flex items-center space-x-2 opacity-50 cursor-pointer', {
+          className={clsx('hidden lg:flex items-center space-x-2 opacity-50 cursor-pointer ', {
             '!opacity-100': isActiveCheck({ href: '/', exact: true })
           })}
           onClick={() => router.push('/')}
@@ -61,7 +61,7 @@ export const Heeader: React.FC = () => {
           </Text>
         </Box>
         <Box
-          className={clsx('flex items-center space-x-2 opacity-50 cursor-pointer', {
+          className={clsx('hidden lg:flex items-center space-x-2 opacity-50 cursor-pointer', {
             '!opacity-100': isActiveCheck({ href: '/tags' })
           })}
           onClick={() => router.push('/tags')}
@@ -98,7 +98,7 @@ export const Heeader: React.FC = () => {
         </Box>
       </Box>
       <Box className="flex items-center space-x-5">
-        <Box onClick={handleNagivateNewPoll} className="cursor-pointer">
+        <Box onClick={handleNagivateNewPoll} className="hidden lg:block cursor-pointer">
           <PlusIcon color="#000" />
         </Box>
         <svg
