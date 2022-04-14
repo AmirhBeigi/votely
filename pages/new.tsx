@@ -116,7 +116,7 @@ const NewPoll: NextPage = () => {
         <Box className="space-y-5 overflow-auto pb-20 scrollbar-hide">
           <label
             htmlFor="upload-image"
-            className="w-full h-[150px] flex justify-center items-center border border-dashed border-[#D5D7DA] rounded-md overflow-hidden"
+            className="w-full h-[150px] flex justify-center items-center cursor-pointer border border-dashed border-[#D5D7DA] rounded-md overflow-hidden"
           >
             <input
               className="hidden absolute"
@@ -179,7 +179,7 @@ const NewPoll: NextPage = () => {
                   viewBox="0 0 12 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="ml-3"
+                  className="ml-3 cursor-pointer"
                 >
                   <circle cx="2.141" cy="2.76033" r="1.80855" fill="#C0C5CB" />
                   <circle cx="9.7581" cy="2.76033" r="1.80855" fill="#C0C5CB" />

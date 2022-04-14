@@ -11,7 +11,7 @@ export const ActiveVoteBanner: React.FC<ActiveVoteBannerProps> = props => {
   const { count, onClick } = props;
   return (
     <Box
-      className="flex justify-between items-center bg-black text-white p-5 rounded-lg"
+      className="flex justify-between items-center bg-black text-white p-5 rounded-lg cursor-pointer"
       onClick={onClick}
     >
       <Box className="flex flex-col space-y-1">

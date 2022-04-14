@@ -182,7 +182,7 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
           </Button>
         )}
         <Box
-          className="flex items-center space-x-3"
+          className="flex items-center space-x-3 cursor-pointer"
           onClick={() => router.push(`/user/${poll.owner.id}`)}
         >
           <Avatar src="/jojo.jpg" />
@@ -198,7 +198,7 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
           ))}
         </Box>
         <Box
-          className="border border-solid border-black rounded-lg p-4 flex items-center justify-between"
+          className="border border-solid border-black rounded-lg p-4 flex items-center justify-between cursor-pointer"
           onClick={() => copyTextToClipboard(pollShareLink)?.then(() => toast('Copied!'))}
         >
           <Text fontWeight="medium" fontSize="sm">
@@ -223,12 +223,18 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
         </Box>
         {isUserOwnedPoll && (
           <Box className="flex justify-center items-center space-x-6 mt-8">
-            <Box className="flex flex-col items-center space-y-2" onClick={handleDeletePoll}>
+            <Box
+              className="flex flex-col items-center space-y-2 cursor-pointer"
+              onClick={handleDeletePoll}
+            >
               <TrashIcon color="#000" />
               <Text>Delete Poll</Text>
             </Box>
             <hr className="border border-solid border-[#F0F3F4] h-full" />
-            <Box className="flex flex-col items-center space-y-2" onClick={handleStopPoll}>
+            <Box
+              className="flex flex-col items-center space-y-2 cursor-pointer"
+              onClick={handleStopPoll}
+            >
               {isStoped ? (
                 <>
                   <PlayIcon color="#000" />

@@ -17,7 +17,7 @@ export const TagCardCompact: React.FC<TagCardCompactProps> = ({
   const router = useRouter();
   return (
     <Box
-      className="flex flex-col space-y-1 bg-[#F0F3F4] p-4 pr-10 rounded-lg"
+      className="flex flex-col space-y-1 bg-[#F0F3F4] p-4 pr-10 rounded-lg cursor-pointer"
       onClick={() => router.push(`/tags/${identifier}`)}
     >
       <Text fontWeight="medium" dir="auto">

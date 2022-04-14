@@ -20,7 +20,7 @@ export const Option: React.FC<OptionProps> = props => {
 
   return (
     <Box
-      className="h-20 bg-[#F0F3F4] flex items-center p-8 px-5 rounded-lg relative"
+      className="h-20 bg-[#F0F3F4] flex items-center p-8 px-5 rounded-lg relative cursor-pointer"
       onClick={submit}
     >
       <Box

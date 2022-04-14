@@ -19,7 +19,7 @@ export const VoteCard: React.FC<VoteCardProps> = ({
   const router = useRouter();
   return (
     <Box
-      className="flex flex-col space-y-3 bg-[#F0F3F4] w-full p-5 rounded-lg"
+      className="flex flex-col space-y-3 bg-[#F0F3F4] w-full p-5 rounded-lg cursor-pointer"
       onClick={() => router.push(`/p/${identifier}`)}
     >
       <Text fontWeight="medium" dir="auto" className="line-clamp-1">
