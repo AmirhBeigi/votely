@@ -294,10 +294,10 @@ export const getServerSideProps: GetServerSideProps = async context => {
       viewport_height: 300
     };
 
-    let headers = {
+    const headers = {
       auth: {
-        username: process.env.HCTI_USERNAME,
-        password: process.env.HCTI_PASSWORD
+        username: process.env.HCTI_USERNAME ?? '',
+        password: process.env.HCTI_PASSWORD ?? ''
       },
       headers: {
         'Content-Type': 'application/json'
