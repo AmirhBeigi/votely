@@ -106,19 +106,11 @@ const NewPoll: NextPage<Props> = ({ poll, ogImage }) => {
     <Layout>
       <Head>
         <title>{poll.title}</title>
-        <meta
-          content="https://hcti.io/v1/image/83a28a8c-0562-414d-b934-0e166bdeb916"
-          property="og:image"
-          name="image"
-        />
-        <meta
-          content="https://hcti.io/v1/image/83a28a8c-0562-414d-b934-0e166bdeb916"
-          property="twitter:image"
-        />
-        <meta
-          name="twitter:image"
-          content="https://hcti.io/v1/image/83a28a8c-0562-414d-b934-0e166bdeb916"
-        />
+        <meta content={ogImage} property="og:image" name="image" />
+        <meta content={ogImage} property="twitter:image" />
+        <meta name="twitter:image" content={ogImage} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
