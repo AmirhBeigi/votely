@@ -1,10 +1,18 @@
-import clsx from "clsx";
+import clsx from 'clsx';
 
-export const ChevronIcon = ({
-  dir = "left",
-  color = "#000",
-  width = "7",
-  height = "11",
+interface Props extends NativeDomProps<SVGSVGElement> {
+  color?: string;
+  width?: string;
+  height?: string;
+  dir: 'left' | 'right' | 'top' | 'bottom';
+}
+
+export const ChevronIcon: React.FC<Props> = ({
+  dir = 'left',
+  color = '#000',
+  width = '7',
+  height = '11',
+  className,
   ...rest
 }) => {
   return (
@@ -14,11 +22,11 @@ export const ChevronIcon = ({
       viewBox="0 0 7 11"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx({
-        "rotate-180": dir === "left",
-        "rotate-[360deg]": dir === "right",
-        "rotate-90": dir === "bottom",
-        "rotate-[270deg]": dir === "top",
+      className={clsx(className, {
+        'rotate-180': dir === 'left',
+        'rotate-[360deg]': dir === 'right',
+        'rotate-90': dir === 'bottom',
+        'rotate-[270deg]': dir === 'top'
       })}
       {...rest}
     >

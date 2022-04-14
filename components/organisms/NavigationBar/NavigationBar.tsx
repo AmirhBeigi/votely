@@ -1,21 +1,29 @@
-import clsx from "clsx";
-import { useRouter } from "next/router";
-import Box from "../../atom/Box";
-import Text from "../../atom/Text";
-import { PlusIcon } from "../../icons";
+import clsx from 'clsx';
+import { useRouter } from 'next/router';
+import { useUser } from '../../../contexts/user';
+import Box from '../../atom/Box';
+import Text from '../../atom/Text';
+import { PlusIcon } from '../../icons';
 
 export const NavigationBar: React.FC = () => {
+  const [user] = useUser();
   const router = useRouter();
-  const isActiveCheck = ({href,exact}: {href:string,exact?:boolean}): boolean =>exact ? router.pathname === href :  router.pathname.startsWith(href);
+  const isActiveCheck = ({ href, exact }: { href: string; exact?: boolean }): boolean =>
+    exact ? router.pathname === href : router.pathname.startsWith(href);
+
+  const handleNagivateNewPoll = () => {
+    if (!user) return router.push('/login');
+    router.push('/new');
+  };
 
   return (
     <Box className="fixed bottom-0 left-0 min-h-[4.3rem] h-[4.3rem] w-full px-7 pr-8 bg-white flex justify-between shadow-[0_-30px_65px_-18px_rgba(0,0,0,0.2)] lg:hidden">
       <Box className="flex space-x-8">
         <Box
-          className={clsx("flex items-center space-x-2 opacity-50", {
-            "!opacity-100": isActiveCheck({href:"/",exact:true}),
+          className={clsx('flex items-center space-x-2 opacity-50', {
+            '!opacity-100': isActiveCheck({ href: '/', exact: true })
           })}
-          onClick={() => router.push("/")}
+          onClick={() => router.push('/')}
         >
           <svg
             width="31"
@@ -38,10 +46,10 @@ export const NavigationBar: React.FC = () => {
           </Text>
         </Box>
         <Box
-          className={clsx("flex items-center space-x-2 opacity-50", {
-            "!opacity-100": isActiveCheck({href:"/tags"}),
+          className={clsx('flex items-center space-x-2 opacity-50', {
+            '!opacity-100': isActiveCheck({ href: '/tags' })
           })}
-          onClick={() => router.push("/tags")}
+          onClick={() => router.push('/tags')}
         >
           <svg
             width="31"
@@ -75,7 +83,7 @@ export const NavigationBar: React.FC = () => {
         </Box>
       </Box>
       <Box
-        onClick={() => router.push("/new")}
+        onClick={handleNagivateNewPoll}
         className="h-16 w-16 -mt-4 flex justify-center items-center bg-black rounded-xl shadow-[0_15px_41px_0_rgba(53,62,69,0.5)]"
       >
         <PlusIcon color="#fff" />

@@ -1,20 +1,19 @@
-import "../styles/fonts.css";
-import "tailwindcss/tailwind.css";
-import type { AppProps } from "next/app";
-import { QueryClientProvider, QueryClient } from "react-query";
-import { AnimatePresence, motion } from "framer-motion";
-import Splash from "../components/splash";
-
-const queryClient = new QueryClient();
+import '../styles/fonts.css';
+import 'tailwindcss/tailwind.css';
+import type { AppProps } from 'next/app';
+import { AnimatePresence } from 'framer-motion';
+import Splash from '../components/Splash';
+import Provider from '../components/Provider';
+import { useMe } from '../apis/auth/me/hook';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider client={queryClient}>
+    <Provider>
       <Splash />
       <AnimatePresence exitBeforeEnter initial={false} onExitComplete={() => window.scrollTo(0, 0)}>
         <Component {...pageProps} />
       </AnimatePresence>
-    </QueryClientProvider>
+    </Provider>
   );
 }
 

@@ -1,25 +1,37 @@
-import type { GetServerSideProps, NextPage } from "next";
-import Head from "next/head";
-import TextField from "../components/atom/TextField";
-import { SearchIcon } from "../components/icons";
-import ActiveVoteBanner from "../components/organisms/ActiveVoteBanner";
-import Section from "../components/molecules/Section";
-import Box from "../components/atom/Box";
-import { useRouter } from "next/router";
-import VoteCard from "../components/organisms/VoteCard";
-import Layout from "../components/Layout";
-import { motion } from "framer-motion";
-import { getVotes } from "../apis/votes/getAll/api";
-import { getActiveCounts } from "../apis/votes/getActiveCounts/api";
+import type { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
+import TextField from '../components/atom/TextField';
+import { SearchIcon } from '../components/icons';
+import ActiveVoteBanner from '../components/organisms/ActiveVoteBanner';
+import Section from '../components/molecules/Section';
+import Box from '../components/atom/Box';
+import { useRouter } from 'next/router';
+import VoteCard from '../components/organisms/VoteCard';
+import Layout from '../components/Layout';
+import { motion } from 'framer-motion';
+import { getVotes } from '../apis/votes/getAll/api';
+import { getActiveCounts } from '../apis/votes/getActiveCounts/api';
+import TagCardCompact from '../components/organisms/TagCardCompact';
+import { getTags } from '../apis/tags/getAll/api';
+import { getBestTags } from '../apis/tags/best/api';
+import Polls from '../components/organisms/Polls';
+import { useState } from 'react';
+import debounce from 'lodash/debounce';
+import { useUser } from '../contexts/user';
 
 interface Props {
-  votes: [];
-  activeCounts: number;
+  tags: [];
+  activeCounts: number | null;
 }
 
-const Home: NextPage<Props> = ({ votes, activeCounts }) => {
+const Home: NextPage<Props> = ({ activeCounts, tags }) => {
   const router = useRouter();
-  console.log(votes);
+  const [user] = useUser();
+  const [search, setSearch] = useState();
+  const onChangeSearchPolls = debounce(e => {
+    setSearch(e.target.value);
+  }, 1000);
+
   return (
     <Layout>
       <Head>
@@ -29,58 +41,66 @@ const Home: NextPage<Props> = ({ votes, activeCounts }) => {
       </Head>
 
       <main className="space-y-5 pb-32">
-        <TextField placeholder="Search polls ..." beforElement={<SearchIcon color="#283138" />} />
-        <ActiveVoteBanner count={activeCounts} />
-        <Section title="Top Categories" showAllAction={() => router.push("/tags")}>
+        <TextField
+          placeholder="Search polls ..."
+          beforElement={<SearchIcon color="#283138" />}
+          onChange={onChangeSearchPolls}
+        />
+        {user && (
+          <ActiveVoteBanner
+            count={activeCounts ?? 0}
+            onClick={() => router.push(`/user/${user.id}`)}
+          />
+        )}
+        <Section title="Top Categories" showAllAction={() => router.push('/tags')}>
           <motion.div
             drag="x"
             dragDirectionLock
             dragConstraints={{ right: 0, left: 0 }}
             dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
             dragElastic={0.5}
-            whileTap={{ cursor: "grabbing" }}
+            whileTap={{ cursor: 'grabbing' }}
             className="flex items-center space-x-5"
           >
-            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
-            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
-            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
+            {tags.map((tag: Tag) => (
+              <TagCardCompact
+                key={tag.id}
+                title={tag.title}
+                pollsCount={tag.count_of_polls}
+                identifier={tag.id}
+              />
+            ))}
           </motion.div>
         </Section>
         <Section title="Recent Polls">
-          <Box className="flex flex-col space-y-5 ">
-            {votes.map((vote) => (
-              <VoteCard
-                key={vote.id}
-                title={vote.title}
-                votesCount={vote.votes_count}
-                optionsCount={vote.options.length}
-                identifier={vote.id}
-              />
-            ))}
-          </Box>
+          <Polls search={search} />
         </Section>
       </main>
     </Layout>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   try {
-    const { data: votes } = await getVotes({ page: 1 });
-    const { data: activeCounts } = await await getActiveCounts(context.req.cookies["votely.token"]);
+    const { data: bestTags } = await getBestTags({ page: 1 });
+    let activeCounts;
+    if (context.req.cookies['votely.token']) {
+      const { data } = await getActiveCounts(context.req.cookies['votely.token']);
+      activeCounts = data.count;
+    }
     return {
       props: {
-        votes,
-        activeCounts: activeCounts.count,
-      },
+        tags: bestTags,
+        activeCounts: activeCounts ?? 0
+      }
     };
   } catch (e) {
     console.log(e);
   }
   return {
     props: {
-      vote: null,
-    },
+      tags: []
+    }
   };
 };
 

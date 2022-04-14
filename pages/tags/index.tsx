@@ -1,15 +1,29 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import TextField from "../../components/atom/TextField";
-import { SearchIcon } from "../../components/icons";
-import ActiveVoteBanner from "../../components/organisms/ActiveVoteBanner";
-import Section from "../../components/molecules/Section";
-import Box from "../../components/atom/Box";
-import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
+import type { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
+import TextField from '../../components/atom/TextField';
+import { SearchIcon } from '../../components/icons';
+import Layout from '../../components/Layout';
+import TagCard from '../../components/organisms/TagCard';
+import { getTags } from '../../apis/tags/getAll/api';
+import { useGetTags } from '../../apis/tags/getAll/hook';
+import { useEffect, useState } from 'react';
+import debounce from 'lodash/debounce';
+import isEmpty from 'lodash/isEmpty';
 
-const Tags: NextPage = () => {
-  const router = useRouter();
+const Tags = ({ tagsInital }: { tagsInital: Tag[] }) => {
+  const [search, setSearch] = useState();
+  const {
+    data: { data: tags },
+    refetch
+  } = useGetTags({ page: 1, search }, { data: tagsInital });
+  const handleChangeSearchTags = debounce(e => {
+    setSearch(e.target.value);
+  }, 1000);
+
+  useEffect(() => {
+    if (search) refetch();
+  }, [search]);
+
   return (
     <Layout>
       <Head>
@@ -19,17 +33,42 @@ const Tags: NextPage = () => {
       </Head>
 
       <main className="space-y-5 pb-32">
-        <TextField placeholder="Search Tags ..." beforElement={<SearchIcon color="#283138" />} />
-        <Section title="Top Categories">
-          <Box className="flex items-center space-x-5">
-            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
-            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
-            <Box className="w-20 h-20 bg-gray-100 rounded-lg" />
-          </Box>
-        </Section>
+        <TextField
+          placeholder="Search Tags ..."
+          beforElement={<SearchIcon color="#283138" />}
+          onChange={handleChangeSearchTags}
+        />
+        {!isEmpty(tags) &&
+          tags.map((tag: Tag) => (
+            <TagCard
+              key={tag.id}
+              title={tag.title}
+              pollsCount={tag.count_of_polls}
+              votersCount={tag.count_of_voters}
+              identifier={tag.id}
+            />
+          ))}
       </main>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const { data: tagsInital } = await getTags({ page: 1 });
+    return {
+      props: {
+        tagsInital
+      }
+    };
+  } catch (e) {
+    console.log(e);
+  }
+  return {
+    props: {
+      tagsInital: []
+    }
+  };
 };
 
 export default Tags;

@@ -1,4 +1,4 @@
-import { client } from "../../client";
+import { client } from '../../client';
 
 interface LoginType {
   identifier: string;
@@ -6,5 +6,5 @@ interface LoginType {
 }
 
 export const login = ({ identifier, password }: LoginType) => {
-  return client.post("/auth/login", { identifier, password });
+  return client.post('/auth/login', { identifier, password });
 };

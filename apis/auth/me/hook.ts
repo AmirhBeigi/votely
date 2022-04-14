@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
-import { me } from "./api";
+import { useQuery } from 'react-query';
+import { me } from './api';
 
-export const useMe = () => useQuery(["me"], me);
+export const useMe = () => useQuery(['me'], me, { enabled: false });

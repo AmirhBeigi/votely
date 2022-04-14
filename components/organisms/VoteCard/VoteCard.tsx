@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import Box from "../../atom/Box";
-import Button from "../../atom/Button";
-import Text from "../../atom/Text";
+import { useRouter } from 'next/router';
+import Box from '../../atom/Box';
+import Button from '../../atom/Button';
+import Text from '../../atom/Text';
 
 interface VoteCardProps {
   title: string;
@@ -14,7 +14,7 @@ export const VoteCard: React.FC<VoteCardProps> = ({
   title,
   votesCount,
   optionsCount,
-  identifier,
+  identifier
 }) => {
   const router = useRouter();
   return (
@@ -22,7 +22,7 @@ export const VoteCard: React.FC<VoteCardProps> = ({
       className="flex flex-col space-y-3 bg-[#F0F3F4] w-full p-5 rounded-lg"
       onClick={() => router.push(`/p/${identifier}`)}
     >
-      <Text fontWeight="medium" dir="auto">
+      <Text fontWeight="medium" dir="auto" className="line-clamp-1">
         {title}
       </Text>
       <Box className="flex items-center space-x-4">
@@ -42,7 +42,7 @@ export const VoteCard: React.FC<VoteCardProps> = ({
             />
           </svg>
           <Text fontSize="sm" fontWeight="medium">
-            {votesCount} People
+            {votesCount} Voter
           </Text>
         </Box>
         <Box className="flex items-center space-x-1">

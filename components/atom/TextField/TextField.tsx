@@ -1,11 +1,12 @@
-import clsx from "clsx";
+import clsx from 'clsx';
 
-interface TextFieldProps extends NativeDomProps<HTMLInputElement> {
+interface TextFieldProps
+  extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   beforElement?: React.ReactNode;
   afterElement?: React.ReactNode;
 }
 
-export const TextField: React.FC<TextFieldProps> = (props) => {
+export const TextField: React.FC<TextFieldProps> = props => {
   const { beforElement, afterElement, ...inputProps } = props;
   return (
     <div className="relative w-full">
@@ -16,10 +17,10 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
       )}
       <input
         className={clsx(
-          "h-14 border border-solid border-[#E1ECEF] rounded-md w-full px-4 outline-gray-300 placeholder:text-gray-300",
+          'h-14 border border-solid border-[#E1ECEF] rounded-md w-full px-4 outline-gray-300 placeholder:text-gray-300',
           {
-            "pl-14": beforElement,
-            "pr-14": afterElement,
+            'pl-14': beforElement,
+            'pr-14': afterElement
           }
         )}
         {...inputProps}

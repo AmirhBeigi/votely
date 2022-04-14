@@ -1,55 +1,109 @@
-import type { NextPage } from "next";
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import Avatar from "../components/atom/Avatar";
-import Box from "../components/atom/Box";
-import Button from "../components/atom/Button";
-import Chips from "../components/atom/Chips";
-import Modal from "../components/atom/Modal";
-import Text from "../components/atom/Text";
-import TextField from "../components/atom/TextField";
-import { AddImageIcon, PlusIcon, SearchIcon } from "../components/icons";
-import Layout from "../components/Layout";
-import { Reorder } from "framer-motion";
-import { useCreatePoll } from "../apis/votes/create/hook";
-import { useGetTags } from "../apis/tags/getAll/hook";
-import { Skeleton } from "../components/atom/Skeleton";
-import debounce from "lodash/debounce";
+/* eslint-disable @next/next/no-img-element */
+import type { NextPage } from 'next';
+import { useState, useEffect, useCallback, ImgHTMLAttributes, useId } from 'react';
+import Head from 'next/head';
+import Avatar from '../components/atom/Avatar';
+import Box from '../components/atom/Box';
+import Button from '../components/atom/Button';
+import Chips from '../components/atom/Chips';
+import Modal from '../components/atom/Modal';
+import Text from '../components/atom/Text';
+import TextField from '../components/atom/TextField';
+import { AddImageIcon, CheckIcon, CloseIcon, PlusIcon, SearchIcon } from '../components/icons';
+import Layout from '../components/Layout';
+import { Reorder } from 'framer-motion';
+import { useCreatePoll } from '../apis/votes/create/hook';
+import { useGetTags } from '../apis/tags/getAll/hook';
+import { Skeleton } from '../components/atom/Skeleton';
+import debounce from 'lodash/debounce';
+import CropImage from '../components/organisms/CropImage';
+import isEmpty from 'lodash/isEmpty';
+import { useUser } from '../contexts/user';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import { useCreateTag } from '../apis/tags/create/hook';
 
 const NewPoll: NextPage = () => {
+  const router = useRouter();
+  const [user] = useUser();
+  const optionId = useId();
   const [tagsModal, setTagsModal] = useState(false);
-  const [searchTagValue, setSearchTagValue] = useState("");
+  const [newTagModal, setNewTagModal] = useState(false);
+  const [cropModal, setCropModal] = useState(false);
+  const [searchTagValue, setSearchTagValue] = useState('');
   const getTags = useGetTags({ page: 1, search: searchTagValue });
-  const [title, setTitle] = useState("");
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [title, setTitle] = useState('');
   const [options, setOptions] = useState([
-    { id: 0, title: "" },
-    { id: 1, title: "" },
+    { id: 1, title: '' },
+    { id: 2, title: '' }
   ]);
   const createPoll = useCreatePoll();
+  const createTag = useCreateTag();
+  const allowedFileTypes = `image/gif image/png, image/jpeg, image/x-png`;
+  const [selectImage, setSelectImage] =
+    useState<ImgHTMLAttributes<HTMLImageElement>['src']>(undefined);
+  const [coverImage, setCoverImage] = useState<File | undefined>(undefined);
+  const [tagName, setTagName] = useState('');
 
   useEffect(() => {
     tagsModal && getTags.refetch();
   }, [tagsModal]);
 
-  const onChangeSearchTag = debounce(
-    (e) => {
-      setSearchTagValue(e.target.value);
-      setTimeout(() => getTags.refetch(), 0);
-    },
-    1000,
-    1000,
-    { leading: true, trailing: false }
-  );
+  const onChangeSearchTag = debounce(e => {
+    setSearchTagValue(e.target.value);
+    setTimeout(() => getTags.refetch(), 0);
+  }, 1000);
 
-  const publishPoll = () => {
-    createPoll.mutate({
-      title,
-      options: options.map(({ title }) => ({
+  const publishPoll = async () => {
+    try {
+      const {
+        data: { id }
+      } = await createPoll.mutateAsync({
         title,
-      })),
-    });
+        options: options.map(({ title }) => ({
+          title
+        })),
+        cover: coverImage,
+        tag_ids: tags.map(({ id }: any): number => id)
+      });
+      router.push(`/p/${id}`);
+    } catch (error: any) {}
   };
 
+  const createTagAction = () => {
+    createTag.mutate(
+      {
+        title: tagName
+      },
+      {
+        onSuccess: () => {
+          toast('Tag created successfully');
+          setNewTagModal(false);
+          setTagName('');
+          getTags.refetch();
+        }
+      }
+    );
+  };
+
+  const removeOption = useCallback(
+    (index: number) => {
+      console.log(index);
+      console.log(options);
+      console.log(options.filter((_, i) => i !== index));
+      setOptions(options.filter((_, i) => i !== index));
+    },
+    [options]
+  );
+
+  const addOption = useCallback(() => {
+    console.log(options);
+    console.log('optionId', optionId);
+    setOptions([...options, { id: Math.random(), title: '' }]);
+  }, [options]);
+
+  if (!user) return null;
   return (
     <Layout shouldNotShowNavigationBar={true}>
       <Head>
@@ -59,17 +113,42 @@ const NewPoll: NextPage = () => {
       </Head>
 
       <main className="flex flex-col h-full justify-between">
-        <Box className="space-y-5">
-          <Box className="w-full h-32 flex flex-col space-y-2 justify-center items-center border border-dashed border-[#D5D7DA] rounded-md">
-            <AddImageIcon color="#000" />
-            <Text fontSize="sm" fontWeight="medium">
-              Add Cover
-            </Text>
-          </Box>
+        <Box className="space-y-5 overflow-auto pb-20 scrollbar-hide">
+          <label
+            htmlFor="upload-image"
+            className="w-full h-[150px] flex justify-center items-center border border-dashed border-[#D5D7DA] rounded-md overflow-hidden"
+          >
+            <input
+              className="hidden absolute"
+              id="upload-image"
+              name="upload photo"
+              type="file"
+              multiple={false}
+              onChange={e => {
+                // @ts-ignore
+                setSelectImage(URL.createObjectURL(e.target.files[0]));
+                setCropModal(true);
+              }}
+              accept={allowedFileTypes}
+            />
+            {!coverImage && (
+              <Box className="flex flex-col space-y-2 justify-center items-center">
+                <AddImageIcon color="#000" />
+                <Text fontSize="sm" fontWeight="medium">
+                  Add Cover
+                </Text>
+              </Box>
+            )}
+            {coverImage && (
+              <img className="w-full h-full" src={URL.createObjectURL(coverImage)} alt="" />
+            )}
+          </label>
+
           <TextField
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={e => setTitle(e.target.value)}
             value={title}
             placeholder="Type ask a question"
+            dir="auto"
           />
           <Reorder.Group
             axis="y"
@@ -78,13 +157,21 @@ const NewPoll: NextPage = () => {
             className="w-full flex flex-col space-y-2"
           >
             {options.map((option, index) => (
-              <Reorder.Item key={option.id} value={option} className="flex items-center space-x-3">
+              <Reorder.Item key={option.id} value={option} className="flex items-center">
+                {options.length > 2 && (
+                  <CloseIcon
+                    className="mr-2 cursor-pointer"
+                    color="#ccc"
+                    onClick={() => removeOption(index)}
+                  />
+                )}
                 <TextField
-                  placeholder={`Option ${option.id + 1}`}
-                  onChange={(e) => {
+                  placeholder={`Option ${index + 1}`}
+                  onChange={e => {
                     options[index].title = e.target.value;
                     setOptions(options);
                   }}
+                  dir="auto"
                 />
                 <svg
                   width="12"
@@ -92,6 +179,7 @@ const NewPoll: NextPage = () => {
                   viewBox="0 0 12 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="ml-3"
                 >
                   <circle cx="2.141" cy="2.76033" r="1.80855" fill="#C0C5CB" />
                   <circle cx="9.7581" cy="2.76033" r="1.80855" fill="#C0C5CB" />
@@ -107,7 +195,7 @@ const NewPoll: NextPage = () => {
             <Button
               variant="outlined"
               className="flex justify-center items-center"
-              onClick={() => setOptions((prev) => [...prev, { id: prev.length, title: "" }])}
+              onClick={addOption}
             >
               <PlusIcon color="#000" />
               <Text fontWeight="medium">Add Option</Text>
@@ -115,18 +203,32 @@ const NewPoll: NextPage = () => {
           )}
           <Box className="flex items-center space-x-3">
             <Avatar src="/jojo.jpg" />
-            <Text fontWeight="medium">Mohammad</Text>
+            <Text fontWeight="medium">{user.username}</Text>
           </Box>
+          {!isEmpty(tags) && (
+            <Box className="flex max-h-[7rem] flex-wrap gap-2 overflow-auto">
+              {tags.map((tag: any) => (
+                <Chips
+                  key={tag.id}
+                  onClick={() => setTags(prev => prev.filter((t: any) => t.id !== tag.id))}
+                >
+                  {tag.title}
+                </Chips>
+              ))}
+            </Box>
+          )}
           <Button
             variant="text"
-            className="flex justify-start items-center space-x-2"
+            className="flex !justify-start items-center space-x-2"
             onClick={() => setTagsModal(true)}
           >
             <PlusIcon color="#000" />
             <Text fontWeight="medium">Add Tags</Text>
           </Button>
         </Box>
-        <Button onClick={publishPoll}>Publish</Button>
+        <Button onClick={publishPoll} isLoading={createPoll.isLoading}>
+          Publish
+        </Button>
       </main>
 
       <Modal isOpen={tagsModal} onClose={() => setTagsModal(false)}>
@@ -143,8 +245,48 @@ const NewPoll: NextPage = () => {
               <Skeleton w="10rem" h="2rem" className="rounded-full" />
             </>
           )}
-          {getTags.isSuccess && getTags.data?.data?.map((tag) => <Chips>{tag.title}</Chips>)}
+          <Chips className="px-1 pr-4" onClick={() => setNewTagModal(true)}>
+            <PlusIcon color="#000" className="w-7 h-7" />
+            <span>Add New</span>
+          </Chips>
+          {getTags.isSuccess &&
+            getTags.data?.data &&
+            getTags.data?.data?.map((tag: Tag) => (
+              <Chips
+                key={tag.id}
+                onClick={() =>
+                  tags.some(({ id }: any) => id === tag.id)
+                    ? setTags(prev => prev.filter((t: any) => t.id !== tag.id))
+                    : setTags((prev: Tag[]) => [...prev, tag])
+                }
+              >
+                {tags.some(({ id }: any) => id === tag.id) && (
+                  <CheckIcon color="#000" className="mr-1" />
+                )}
+                <span>{tag.title}</span>
+              </Chips>
+            ))}
         </Box>
+      </Modal>
+      <Modal isOpen={newTagModal} onClose={() => setNewTagModal(false)}>
+        <Box className="flex flex-col space-y-3">
+          <Text fontSize="sm" fontWeight="medium">
+            Name Tag
+          </Text>
+          <TextField placeholder="Programming" onChange={e => setTagName(e.currentTarget.value)} />
+          <Button onClick={createTagAction} isLoading={createTag.isLoading}>
+            Add
+          </Button>
+        </Box>
+      </Modal>
+      <Modal isOpen={cropModal} onClose={() => setCropModal(false)}>
+        <CropImage
+          src={selectImage}
+          output={src => {
+            setCropModal(false);
+            setCoverImage(src);
+          }}
+        />
       </Modal>
     </Layout>
   );

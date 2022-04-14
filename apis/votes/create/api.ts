@@ -1,11 +1,11 @@
-import { formData } from "../../../utils/formData";
-import { client } from "../../client";
+import { formData } from '../../../utils/formData';
+import { client } from '../../client';
 
 interface CreatePoll {
   title: string;
-  cover?: string;
+  cover?: File;
   options: { title: string }[];
-  tag_id?: number[];
+  tag_ids?: number[];
 }
 
 export const createPoll = (voteParams: CreatePoll) =>

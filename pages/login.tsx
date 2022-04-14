@@ -1,32 +1,29 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useState } from "react";
-import Box from "../components/atom/Box";
-import Button from "../components/atom/Button";
-import Text from "../components/atom/Text";
-import TextField from "../components/atom/TextField";
-import { CloseEyeIcon, GoogleIcon, OpenEyeIcon } from "../components/icons";
-import { HandingKey } from "../components/illustrations";
-import { useRouter } from "next/router";
-import { useLogin } from "../apis/auth/login/hook";
-import Layout from "../components/Layout";
+/* eslint-disable react/no-unescaped-entities */
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { useState } from 'react';
+import Box from '../components/atom/Box';
+import Button from '../components/atom/Button';
+import Text from '../components/atom/Text';
+import TextField from '../components/atom/TextField';
+import { HandingKey } from '../components/illustrations';
+import { useRouter } from 'next/router';
+import { useLogin } from '../apis/auth/login/hook';
+import Layout from '../components/Layout';
+import PasswordField from '../components/molecules/PasswordField';
+import GoogleLoginButton from '../components/molecules/GoogleLoginButton';
 
 const Login: NextPage = () => {
   const router = useRouter();
   const login = useLogin();
-  const [identifier, setIdentifier] = useState("");
-  const [password, setPassword] = useState("");
-  const [shouldShowPassword, setShouldShowPassword] = useState(false);
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      const { data: userData } = await login.mutateAsync({ identifier, password });
-      router.push("/");
+      await login.mutateAsync({ identifier, password });
+      router.push('/');
     } catch (e) {}
-  };
-
-  const handleShowPassword = () => {
-    setShouldShowPassword(!shouldShowPassword);
   };
 
   return (
@@ -47,38 +44,24 @@ const Login: NextPage = () => {
               <Text fontWeight="medium" fontSize="sm">
                 Username or Email
               </Text>
-              <TextField onChange={(e) => setIdentifier(e.target.value)} value={identifier} />
+              <TextField onChange={e => setIdentifier(e.target.value)} />
             </Box>
             <Box className="w-full space-y-2">
               <Text fontWeight="medium" fontSize="sm">
                 Password
               </Text>
-              <TextField
-                type={shouldShowPassword ? "text" : "password"}
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                afterElement={
-                  shouldShowPassword ? (
-                    <CloseEyeIcon color="#000" onClick={handleShowPassword} />
-                  ) : (
-                    <OpenEyeIcon color="#000" onClick={handleShowPassword} />
-                  )
-                }
-              />
+              <PasswordField onChange={e => setPassword(e.currentTarget.value)} />
             </Box>
-            <Button onClick={handleLogin}>Login</Button>
+            <Button onClick={handleLogin} isLoading={login.isLoading}>
+              Login
+            </Button>
           </Box>
         </Box>
         <Box className="flex flex-col space-y-3 w-full">
-          <Button variant="text" onClick={() => router.push("/register")}>
-          didn't have an account? <strong className="underline">sign up</strong>
+          <Button variant="text" onClick={() => router.push('/register')}>
+            didn't have an account? <strong className="underline">sign up</strong>
           </Button>
-          <Button variant="outlined">
-            <Box className="flex justify-center space-x-2">
-              <GoogleIcon color="#000" />
-              <Text fontWeight="medium">Login with Google</Text>
-            </Box>
-          </Button>
+          <GoogleLoginButton />
         </Box>
       </main>
     </Layout>
