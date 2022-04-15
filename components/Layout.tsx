@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useGoogleLogin } from '../apis/auth/google/hook';
+import { useUser } from '../contexts/user';
 import Heeader from './organisms/Header';
 import NavigationBar from './organisms/NavigationBar';
 
@@ -16,10 +17,12 @@ const variants = {
 };
 
 const Layout: React.FC<LayoutProps> = ({ children, shouldNotShowNavigationBar }) => {
+  const [user] = useUser();
   const googleLogin = useGoogleLogin();
 
   const handlLoginGoogleSuccess = async (data: any) => {
     try {
+      console.log(data);
       await googleLogin.mutateAsync({
         access_token: data.credential
       });
@@ -27,7 +30,7 @@ const Layout: React.FC<LayoutProps> = ({ children, shouldNotShowNavigationBar })
   };
 
   useEffect(() => {
-    if (window.google) {
+    if (window.google && !user) {
       window.google.accounts.id.initialize({
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '',
         callback: handlLoginGoogleSuccess
