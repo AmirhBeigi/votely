@@ -35,7 +35,7 @@ const User: NextPage = () => {
 
   const handleLogout = () => {
     removeCookies('votely.token');
-    setUser({});
+    setUser(null);
     router.push('/login');
   };
 
