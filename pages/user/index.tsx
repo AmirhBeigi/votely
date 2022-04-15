@@ -56,7 +56,7 @@ const User: NextPage = () => {
           <Button
             variant="text"
             onClick={handleLogout}
-            className="underline w-fit h-fit text-sm self-end"
+            className="underline w-fit !h-fit !min-h-fit text-sm self-end"
           >
             logout
           </Button>

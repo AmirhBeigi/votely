@@ -17,7 +17,11 @@ export const Section: React.FC<SectionProps> = props => {
           {title}
         </Text>
         {!!showAllAction && (
-          <Button variant="text" onClick={showAllAction} className="underline w-fit h-fit text-sm">
+          <Button
+            variant="text"
+            onClick={showAllAction}
+            className="underline w-fit !h-fit !min-h-fit text-sm"
+          >
             Show All
           </Button>
         )}
