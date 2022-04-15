@@ -18,6 +18,7 @@ import Polls from '../components/organisms/Polls';
 import { useState } from 'react';
 import debounce from 'lodash/debounce';
 import { useUser } from '../contexts/user';
+import { DragSlider } from '../components/atom/Slider/Slider';
 
 interface Props {
   tags: [];
@@ -53,15 +54,7 @@ const Home: NextPage<Props> = ({ activeCounts, tags }) => {
           />
         )}
         <Section title="Top Categories" showAllAction={() => router.push('/tags')}>
-          <motion.div
-            drag="x"
-            dragDirectionLock
-            dragConstraints={{ right: 0, left: 0 }}
-            dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
-            dragElastic={0.5}
-            whileTap={{ cursor: 'grabbing' }}
-            className="flex items-center space-x-5"
-          >
+          <DragSlider>
             {tags.map((tag: Tag) => (
               <TagCardCompact
                 key={tag.id}
@@ -70,7 +63,7 @@ const Home: NextPage<Props> = ({ activeCounts, tags }) => {
                 identifier={tag.id}
               />
             ))}
-          </motion.div>
+          </DragSlider>
         </Section>
         <Section title="Recent Polls">
           <Polls search={search} />

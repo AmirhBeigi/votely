@@ -3,10 +3,8 @@ import debounce from 'lodash/debounce';
 import { useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { SearchIcon } from '../../components/icons';
 import Layout from '../../components/Layout';
 import Box from '../../components/atom/Box';
-import Polls from '../../components/organisms/Polls';
 import { useUser } from '../../contexts/user';
 import Section from '../../components/molecules/Section';
 import Text from '../../components/atom/Text';
@@ -14,10 +12,11 @@ import Button from '../../components/atom/Button';
 import PasswordField from '../../components/molecules/PasswordField';
 import { useChangePassword } from '../../apis/auth/changePassword/hook';
 import toast from 'react-hot-toast';
-import { showError } from '../../utils/showError';
+import { removeCookies } from 'cookies-next';
 
 const User: NextPage = () => {
-  const [user] = useUser();
+  const router = useRouter();
+  const [user, setUser] = useUser();
   const changePassword = useChangePassword();
   const [oldPassword, setOldPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
@@ -34,6 +33,12 @@ const User: NextPage = () => {
     } catch (error: any) {}
   };
 
+  const handleLogout = () => {
+    removeCookies('votely.token');
+    setUser({});
+    router.push('/login');
+  };
+
   if (!user) return null;
 
   return (
@@ -48,6 +53,13 @@ const User: NextPage = () => {
             {user.username}
           </Text>
           <Text fontSize="sm">{user.email}</Text>
+          <Button
+            variant="text"
+            onClick={handleLogout}
+            className="underline w-fit h-fit text-sm self-end"
+          >
+            logout
+          </Button>
         </Box>
         <hr />
         <Section className="mt-6" title="Change password">
