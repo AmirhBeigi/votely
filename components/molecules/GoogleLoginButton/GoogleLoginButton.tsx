@@ -19,7 +19,6 @@ export const GoogleLoginButton: React.FC = () => {
   };
 
   const handlLoginGoogleSuccess = async (data: any) => {
-    console.log(data);
     try {
       await googleLogin.mutateAsync({
         access_token: data.accessToken
