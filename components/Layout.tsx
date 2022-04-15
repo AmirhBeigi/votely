@@ -30,15 +30,15 @@ const Layout: React.FC<LayoutProps> = ({ children, shouldNotShowNavigationBar })
   };
 
   useEffect(() => {
-    if (window.google && !user) {
-      window.google.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '',
-        callback: handlLoginGoogleSuccess
-      });
-      window.google.accounts.id.prompt((notification: any) =>
-        console.log('notification', notification)
-      );
-    }
+    // if (window.google && !user) {
+    //   window.google.accounts.id.initialize({
+    //     client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '',
+    //     callback: handlLoginGoogleSuccess
+    //   });
+    //   window.google.accounts.id.prompt((notification: any) =>
+    //     console.log('notification', notification)
+    //   );
+    // }
   }, []);
 
   return (
