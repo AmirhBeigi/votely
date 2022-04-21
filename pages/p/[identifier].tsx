@@ -26,10 +26,9 @@ import { ogTemplate } from '../../utils/ogTemplate';
 
 interface Props {
   poll: Poll;
-  ogImage: string;
 }
 
-const NewPoll: NextPage<Props> = ({ poll, ogImage }) => {
+const NewPoll: NextPage<Props> = ({ poll }) => {
   const router = useRouter();
   const [user] = useUser();
   const vote = useVote();
@@ -106,9 +105,6 @@ const NewPoll: NextPage<Props> = ({ poll, ogImage }) => {
     <Layout>
       <Head>
         <title>{poll.title}</title>
-        <meta content={ogImage} property="og:image" name="image" />
-        <meta content={ogImage} property="twitter:image" />
-        <meta name="twitter:image" content={ogImage} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
@@ -265,46 +261,10 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const identifier = context.params?.identifier as string;
   try {
     const { data: poll } = await getVote(identifier, context.req.cookies['votely.token']);
-    const payload = {
-      html: ogTemplate({
-        username: poll.owner.username,
-        optionsLength: poll.options.length,
-        title: poll.title
-      }),
-      css: `* {
-        font-family: 'Poppins', 'Vazirmatn', sans-serif;
-      }
-      .title{
-        overflow: hidden;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-         -webkit-line-clamp: 1;
-         margin-bottom:0.5rem;
-        font-size:1.5rem;
-      }`,
-      viewport_width: 550,
-      viewport_height: 300
-    };
-
-    const headers = {
-      auth: {
-        username: process.env.HCTI_USERNAME ?? '',
-        password: process.env.HCTI_PASSWORD ?? ''
-      },
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    const responseImage = await axios.post(
-      'https://hcti.io/v1/image',
-      JSON.stringify(payload),
-      headers
-    );
 
     return {
       props: {
-        poll,
-        ogImage: responseImage.data.url
+        poll
       }
     };
   } catch (e) {
@@ -312,8 +272,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
   return {
     props: {
-      poll: null,
-      ogImage: null
+      poll: null
     }
   };
 };
