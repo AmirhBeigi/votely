@@ -48,7 +48,7 @@ const NewPoll: NextPage = () => {
 
   useEffect(() => {
     tagsModal && getTags.refetch();
-  }, [getTags, tagsModal]);
+  }, [tagsModal]);
 
   const onChangeSearchTag = debounce(e => {
     setSearchTagValue(e.target.value);

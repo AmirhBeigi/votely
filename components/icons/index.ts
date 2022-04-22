@@ -13,3 +13,4 @@ export * from './Users';
 export * from './Loader';
 export * from './Close';
 export * from './Play';
+export * from './Edit';

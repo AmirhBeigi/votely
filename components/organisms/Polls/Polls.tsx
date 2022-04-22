@@ -1,7 +1,8 @@
+import { EmptyState } from '@/components/molecules/EmptyState';
+import { LoadingState } from '@/components/molecules/LoadingState';
 import isEmpty from 'lodash/isEmpty';
 import { useGetVotes } from '../../../apis/votes/getAll';
 import Box from '../../atom/Box';
-import { Skeleton } from '../../atom/Skeleton';
 import Text from '../../atom/Text';
 import { Browse } from '../../illustrations';
 import VoteCard from '../VoteCard';
@@ -9,22 +10,22 @@ import VoteCard from '../VoteCard';
 interface PollsProps {
   search?: string;
   tagId?: number;
-  ownerId?: number;
+  owner?: string;
   isClosed?: boolean;
 }
 
-export const Polls: React.FC<PollsProps> = ({ search, tagId, ownerId, isClosed }) => {
+export const Polls: React.FC<PollsProps> = ({ search, tagId, owner, isClosed }) => {
   const { data, isSuccess, isError, isLoading } = useGetVotes({
     page: 1,
     search,
     tag_id: tagId,
-    owner_id: ownerId,
+    owner_username: owner,
     is_closed: isClosed
   });
 
-  if (isLoading) return <PollsLoading />;
+  if (isLoading) return <LoadingState />;
   if (isError) return <PollsError />;
-  if (isSuccess && isEmpty(data.data)) return <PollsEmpty />;
+  if (isSuccess && isEmpty(data.data)) return <EmptyState />;
   return (
     <Box className="flex flex-col space-y-5 ">
       {data?.data.map((poll: Poll) => (
@@ -36,26 +37,6 @@ export const Polls: React.FC<PollsProps> = ({ search, tagId, ownerId, isClosed }
           identifier={poll.id}
         />
       ))}
-    </Box>
-  );
-};
-
-const PollsLoading: React.FC = () => {
-  return (
-    <Box className="flex flex-col space-y-5 ">
-      <Skeleton className="!w-full !h-28 rounded-lg" />
-      <Skeleton className="!w-full !h-28 rounded-lg" />
-      <Skeleton className="!w-full !h-28 rounded-lg" />
-      <Skeleton className="!w-full !h-28 rounded-lg" />
-    </Box>
-  );
-};
-
-const PollsEmpty: React.FC = () => {
-  return (
-    <Box className="flex flex-col justify-center items-center h-96 space-y-3">
-      <Browse color="#000" />
-      <Text fontWeight="medium">Polls Not Found!</Text>
     </Box>
   );
 };

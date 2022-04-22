@@ -48,19 +48,21 @@ const Home: NextPage<Props> = ({ activeCounts, tags }) => {
         {user && (
           <ActiveVoteBanner
             count={activeCounts ?? 0}
-            onClick={() => router.push(`/user/${user.id}`)}
+            onClick={() => router.push(`/user/${user.username}`)}
           />
         )}
         <Section title="Top Categories" showAllAction={() => router.push('/tags')}>
           <DragSlider>
-            {tags.map(tag => (
-              <TagCardCompact
-                key={tag.id}
-                title={tag.title}
-                pollsCount={tag.count_of_polls}
-                identifier={tag.id}
-              />
-            ))}
+            {tags
+              .filter(tag => tag.count_of_polls > 0)
+              .map(tag => (
+                <TagCardCompact
+                  key={tag.id}
+                  title={tag.title}
+                  pollsCount={tag.count_of_polls}
+                  identifier={tag.id}
+                />
+              ))}
           </DragSlider>
         </Section>
         <Section title="Recent Polls">

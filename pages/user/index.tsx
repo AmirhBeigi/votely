@@ -12,14 +12,21 @@ import Text from '@/components/atom/Text';
 import Button from '@/components/atom/Button';
 import PasswordField from '@/components/molecules/PasswordField';
 import { useChangePassword } from '@/apis/auth/changePassword';
+import Modal from '@/components/atom/Modal';
+import TextField from '@/components/atom/TextField';
+import { useUpdateUser } from '@/apis/users/update';
+import { EditIcon } from '@/components/icons';
 
 const User: NextPage = () => {
   const router = useRouter();
   const [user, setUser] = useUser();
   const changePassword = useChangePassword();
+  const updateUser = useUpdateUser();
+  const [changeUsernameModal, setChangeUsernameModal] = useState(false);
   const [oldPassword, setOldPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPasswords, setConfirmNewPassword] = useState<string>('');
+  const [username, setUsername] = useState<string>(user?.username);
 
   const handleChangePassword = () =>
     changePassword.mutate({
@@ -34,6 +41,18 @@ const User: NextPage = () => {
     router.push('/login');
   };
 
+  const handleChangeUsername = () => {
+    setChangeUsernameModal(false);
+    updateUser.mutate(
+      { username },
+      {
+        onSuccess: data => {
+          setUser(data.data);
+        }
+      }
+    );
+  };
+
   if (!user) return null;
 
   return (
@@ -44,9 +63,12 @@ const User: NextPage = () => {
 
       <Box className="space-y-5 pb-32">
         <Box className="flex flex-col">
-          <Text fontSize="lg" fontWeight="bold">
-            {user.username}
-          </Text>
+          <Box className="flex space-x-1" onClick={() => setChangeUsernameModal(true)}>
+            <Text className="line-clamp-1" fontSize="lg" fontWeight="bold">
+              {user.username}
+            </Text>
+            <EditIcon color="#000" />
+          </Box>
           <Text fontSize="sm">{user.email}</Text>
           <Button
             variant="text"
@@ -77,6 +99,21 @@ const User: NextPage = () => {
           </Button>
         </Section>
       </Box>
+      <Modal isOpen={changeUsernameModal} onClose={() => setChangeUsernameModal(false)}>
+        <Box className="flex flex-col space-y-3">
+          <Text fontSize="sm" fontWeight="medium">
+            username
+          </Text>
+          <TextField
+            placeholder="Programming"
+            defaultValue={user.username}
+            onChange={e => setUsername(e.currentTarget.value)}
+          />
+          <Button onClick={handleChangeUsername} isLoading={updateUser.isLoading}>
+            Update
+          </Button>
+        </Box>
+      </Modal>
     </Layout>
   );
 };

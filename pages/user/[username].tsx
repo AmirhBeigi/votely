@@ -12,7 +12,7 @@ import Polls from '@/components/organisms/Polls';
 
 const UserPolls: NextPage = () => {
   const {
-    query: { id }
+    query: { username }
   } = useRouter();
   const [search, setSearch] = useState();
 
@@ -20,7 +20,7 @@ const UserPolls: NextPage = () => {
     setSearch(e.target.value);
   }, 1000);
 
-  if (!id || isNaN(+id)) return null;
+  if (!username) return null;
   return (
     <Layout>
       <Head>
@@ -33,7 +33,7 @@ const UserPolls: NextPage = () => {
           beforElement={<SearchIcon color="#283138" />}
           onChange={handleChangeSearchPolls}
         />
-        <Polls search={search} ownerId={+id} isClosed={false} />
+        <Polls search={search} owner={username as string} isClosed={false} />
       </Box>
     </Layout>
   );

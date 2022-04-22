@@ -45,7 +45,7 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
 
   useEffect(() => {
     !isEmpty(user) && setIsUserOwnedPoll(poll.owner_id === user.id);
-  }, [poll.owner_id, user]);
+  }, [user]);
 
   const submitVote = (optionId: string) => {
     if (isUserVoted || isStoped) return;
@@ -184,7 +184,7 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
         )}
         <Box
           className="flex items-center space-x-3 cursor-pointer"
-          onClick={() => router.push(`/user/${poll.owner.id}`)}
+          onClick={() => router.push(`/user/${poll.owner.username}`)}
         >
           <Avatar src="/jojo.jpg" />
           <Text fontWeight="medium">{poll.owner.username}</Text>

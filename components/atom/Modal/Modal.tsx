@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { CSSTransition } from "react-transition-group";
+import { AnimatePresence, motion } from 'framer-motion';
+import { CSSTransition } from 'react-transition-group';
 
 interface ModalProps extends NativeDomProps<HTMLDivElement> {
   isOpen: boolean;
@@ -8,56 +8,32 @@ interface ModalProps extends NativeDomProps<HTMLDivElement> {
 
 const backDrop = {
   visible: { opacity: 1 },
-  hidden: { opacity: 0 },
+  hidden: { opacity: 0 }
 };
 
 const modal = {
   visible: {
-    y: "0px",
+    y: '0px',
     opacity: 1,
     transition: {
       delay: 0.3,
-      bounce: 0,
-    },
+      bounce: 0
+    }
   },
   hidden: {
-    y: "100%",
-    opacity: 0,
-  },
+    y: '100%',
+    opacity: 0
+  }
 };
 
-export const Modal: React.FC<ModalProps> = (props) => {
+export const Modal: React.FC<ModalProps> = props => {
   const { children, isOpen, onClose } = props;
 
-  // return (
-  //   <CSSTransition
-  //     in={isOpen}
-  //     timeout={100}
-  //     classNames={{
-  //       enterDone: "opacity-100",
-  //     }}
-  //     unmountOnExit
-  //   >
-  //     <div
-  //       className="fixed top-0 right-0 left-0 bottom-0 bg-gray-900 bg-opacity-60 flex items-end transition-all opacity-0"
-  //       onClick={onClose}
-  //     >
-  //       <div aria-hidden>
-  //         <div
-  //           className="bg-white w-full h-screen p-5 transition-all"
-  //           onClick={(e) => e.stopPropagation()}
-  //         >
-  //           <div>{children}</div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </CSSTransition>
-  // );
   return (
     <AnimatePresence exitBeforeEnter>
       {isOpen && (
         <motion.div
-          className="fixed top-0 right-0 left-0 bottom-0 bg-gray-900 bg-opacity-60 flex items-end lg:items-start lg:justify-center lg:pt-36"
+          className="fixed top-0 right-0 z-50 left-0 bottom-0 bg-gray-900 bg-opacity-60 flex items-end lg:items-start lg:justify-center lg:pt-36"
           variants={backDrop}
           initial="hidden"
           animate="visible"
@@ -66,7 +42,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
         >
           <motion.div
             className="bg-white w-full lg:w-96 p-5 rounded-tl-2xl rounded-tr-2xl lg:rounded-xl"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             variants={modal}
           >
             <div>{children}</div>

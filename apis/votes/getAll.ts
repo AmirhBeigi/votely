@@ -5,7 +5,7 @@ interface GetVotes {
   page: number;
   search?: string;
   tag_id?: number;
-  owner_id?: number;
+  owner_username?: string;
   is_closed?: boolean;
 }
 

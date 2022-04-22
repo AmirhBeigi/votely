@@ -1,4 +1,3 @@
-import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
@@ -8,18 +7,19 @@ import TextField from '@/components/atom/TextField';
 import { SearchIcon } from '@/components/icons';
 import Layout from '@/components/Layout';
 import TagCard from '@/components/organisms/TagCard';
-import { getTags } from '@/apis/tags/getAll';
 import { useGetTags } from '@/apis/tags/getAll';
+import { LoadingState } from '@/components/molecules/LoadingState';
+import { EmptyState } from '@/components/molecules/EmptyState';
 
-const Tags = ({ tagsInital }: { tagsInital: Tag[] }) => {
+const Tags = () => {
   const [search, setSearch] = useState();
-  const { data: tags, refetch } = useGetTags({ page: 1, search }, tagsInital);
+  const { data: tags, isSuccess, isLoading, refetch } = useGetTags({ page: 1, search });
   const handleChangeSearchTags = debounce(e => {
     setSearch(e.target.value);
   }, 1000);
 
   useEffect(() => {
-    if (search) refetch();
+    refetch();
   }, [search]);
 
   return (
@@ -36,8 +36,10 @@ const Tags = ({ tagsInital }: { tagsInital: Tag[] }) => {
           beforElement={<SearchIcon color="#283138" />}
           onChange={handleChangeSearchTags}
         />
-        {!isEmpty(tags) &&
-          tags &&
+        {isLoading && <LoadingState />}
+        {isSuccess && isEmpty(tags) && <EmptyState />}
+        {isSuccess &&
+          !isEmpty(tags) &&
           tags.map(tag => (
             <TagCard
               key={tag.id}
@@ -50,25 +52,6 @@ const Tags = ({ tagsInital }: { tagsInital: Tag[] }) => {
       </main>
     </Layout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const tagsInital = await getTags({ page: 1 });
-    console.log(tagsInital);
-    return {
-      props: {
-        tagsInital
-      }
-    };
-  } catch (e) {
-    console.log(e);
-  }
-  return {
-    props: {
-      tagsInital: []
-    }
-  };
 };
 
 export default Tags;
