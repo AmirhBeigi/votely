@@ -26,9 +26,10 @@ import Error from 'next/error';
 
 interface Props {
   poll: Poll;
+  error: number;
 }
 
-const NewPoll: NextPage<Props> = ({ error, poll }) => {
+const Poll: NextPage<Props> = ({ error, poll }) => {
   const router = useRouter();
   const [user] = useUser();
   const vote = useVote();
@@ -280,4 +281,4 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 };
-export default NewPoll;
+export default Poll;
