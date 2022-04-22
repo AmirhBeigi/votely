@@ -6,7 +6,7 @@ export const EmptyState: React.FC = () => {
   return (
     <Box className="flex flex-col justify-center items-center h-96 space-y-3">
       <Browse color="#000" />
-      <Text fontWeight="medium">Not Found!</Text>
+      <Text fontWeight="medium">Nothing is here!</Text>
     </Box>
   );
 };

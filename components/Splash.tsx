@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LoaderIcon } from './icons';
 import Box from './atom/Box';
+import { useMe } from '@/apis/auth/me';
+import { getCookie } from 'cookies-next';
 
 const splashAnimation = {
   hidden: {
@@ -17,13 +19,22 @@ const splashAnimation = {
 };
 
 export const Splash: React.FC = () => {
+  const { isLoading } = useMe();
   const [isShowSplash, setIsShowSplash] = useState(true);
 
+  // useEffect(() => {
+  //   console.log(isLoading);
+  // }, [isLoading]);
+
   useEffect(() => {
-    setTimeout(() => {
-      setIsShowSplash(false);
-    }, 1000);
-  }, []);
+    if (getCookie('votely.token')) {
+      !isLoading && setIsShowSplash(false);
+    } else {
+      setTimeout(() => {
+        setIsShowSplash(false);
+      }, 1000);
+    }
+  }, [isLoading]);
 
   return (
     <AnimatePresence exitBeforeEnter>

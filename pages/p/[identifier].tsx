@@ -22,29 +22,30 @@ import Text from '@/components/atom/Text';
 import { useDeletePoll } from '@/apis/votes/delete';
 import { useUpdatePoll } from '@/apis/votes/update';
 import { copyTextToClipboard } from '@/utils/copyText';
+import Error from 'next/error';
 
 interface Props {
   poll: Poll;
 }
 
-const NewPoll: NextPage<Props> = ({ poll }) => {
+const NewPoll: NextPage<Props> = ({ error, poll }) => {
   const router = useRouter();
   const [user] = useUser();
   const vote = useVote();
   const unVote = useUnVote();
   const deletePoll = useDeletePoll();
   const updatePoll = useUpdatePoll();
-  const [voterCount, setVoterCount] = useState<number>(poll.votes_count);
+  const [voterCount, setVoterCount] = useState<number>(poll?.votes_count);
   const [isUserOwnedPoll, setIsUserOwnedPoll] = useState(false);
   const [isUserVoted, setIsUserVoted] = useState(
-    poll.options.some((vote: PollOption) => vote.is_user_voted)
+    poll?.options.some((vote: PollOption) => vote.is_user_voted)
   );
-  const [options, setOptions] = useState(poll.options);
-  const [isStoped, setIsStoped] = useState(poll.is_closed);
-  const pollShareLink = `https://votely.vercel.app/p/${poll.short_identifier}`;
+  const [options, setOptions] = useState(poll?.options);
+  const [isStoped, setIsStoped] = useState(poll?.is_closed);
+  const pollShareLink = `https://votely.vercel.app/p/${poll?.short_identifier}`;
 
   useEffect(() => {
-    !isEmpty(user) && setIsUserOwnedPoll(poll.owner_id === user.id);
+    !isEmpty(user) && setIsUserOwnedPoll(poll?.owner_id === user.id);
   }, [user]);
 
   const submitVote = (optionId: string) => {
@@ -99,13 +100,16 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
     });
   };
 
+  if (error) {
+    return <Error statusCode={error} />;
+  }
+
   return (
     <Layout>
       <Head>
         <title>{poll.title}</title>
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex flex-col gap-5 pb-32">
@@ -239,7 +243,7 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
               {isStoped ? (
                 <>
                   <PlayIcon color="#000" />
-                  <Text>Play Polling</Text>
+                  <Text>Continue Polling</Text>
                 </>
               ) : (
                 <>
@@ -265,13 +269,15 @@ export const getServerSideProps: GetServerSideProps = async context => {
         poll
       }
     };
-  } catch (e) {
-    console.log(e);
+  } catch (e: any) {
+    context.res.statusCode = e.response.status;
+
+    return {
+      props: {
+        error: e.response.status,
+        poll: null
+      }
+    };
   }
-  return {
-    props: {
-      poll: null
-    }
-  };
 };
 export default NewPoll;

@@ -13,6 +13,7 @@ const CustomDocument: NextComponentType = () => {
         />
         <script src="https://accounts.google.com/gsi/client" async defer></script>
         <meta name="theme-color" content="#000" />
+        <link rel="icon" href="/jojo.ico" />
       </Head>
       <body className="scrollbar-hide scroll-smooth">
         <Main />

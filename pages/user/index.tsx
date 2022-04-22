@@ -16,11 +16,12 @@ import Modal from '@/components/atom/Modal';
 import TextField from '@/components/atom/TextField';
 import { useUpdateUser } from '@/apis/users/update';
 import { EditIcon } from '@/components/icons';
+import { useLogout } from '@/apis/auth/logout';
 
 const User: NextPage = () => {
-  const router = useRouter();
   const [user, setUser] = useUser();
   const changePassword = useChangePassword();
+  const logout = useLogout();
   const updateUser = useUpdateUser();
   const [changeUsernameModal, setChangeUsernameModal] = useState(false);
   const [oldPassword, setOldPassword] = useState<string>('');
@@ -36,9 +37,7 @@ const User: NextPage = () => {
     });
 
   const handleLogout = () => {
-    removeCookies('votely.token');
-    setUser(null);
-    router.push('/login');
+    logout.mutate();
   };
 
   const handleChangeUsername = () => {
@@ -73,6 +72,7 @@ const User: NextPage = () => {
           <Button
             variant="text"
             onClick={handleLogout}
+            isLoading={logout.isLoading}
             className="underline w-fit !h-fit !min-h-fit text-sm self-end"
           >
             logout
