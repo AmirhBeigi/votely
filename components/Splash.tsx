@@ -18,11 +18,13 @@ const splashAnimation = {
 
 export const Splash: React.FC = () => {
   const [isShowSplash, setIsShowSplash] = useState(true);
+
   useEffect(() => {
     setTimeout(() => {
       setIsShowSplash(false);
     }, 1000);
   }, []);
+
   return (
     <AnimatePresence exitBeforeEnter>
       {isShowSplash && (

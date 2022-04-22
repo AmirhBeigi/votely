@@ -2,29 +2,25 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
-import Box from '../components/atom/Box';
-import Button from '../components/atom/Button';
-import Text from '../components/atom/Text';
-import TextField from '../components/atom/TextField';
-import { HandingKey } from '../components/illustrations';
 import { useRouter } from 'next/router';
-import { useLogin } from '../apis/auth/login/hook';
-import Layout from '../components/Layout';
-import PasswordField from '../components/molecules/PasswordField';
-import GoogleLoginButton from '../components/molecules/GoogleLoginButton';
+
+import Box from '@/components/atom/Box';
+import Button from '@/components/atom/Button';
+import Text from '@/components/atom/Text';
+import TextField from '@/components/atom/TextField';
+import { HandingKey } from '@/components/illustrations';
+import Layout from '@/components/Layout';
+import PasswordField from '@/components/molecules/PasswordField';
+import GoogleLoginButton from '@/components/molecules/GoogleLoginButton';
+import { useLogin } from '@/apis/auth/login';
 
 const Login: NextPage = () => {
   const router = useRouter();
   const login = useLogin();
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
+  const [identifier, setIdentifier] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-  const handleLogin = async () => {
-    try {
-      await login.mutateAsync({ identifier, password });
-      router.push('/');
-    } catch (e) {}
-  };
+  const handleLogin = () => login.mutate({ identifier, password });
 
   return (
     <Layout shouldNotShowNavigationBar={true}>
@@ -57,7 +53,7 @@ const Login: NextPage = () => {
             </Button>
           </Box>
         </Box>
-        <Box className="flex flex-col space-y-3 w-full">
+        <Box className="flex flex-col space-y-1 w-full">
           <Button variant="text" onClick={() => router.push('/register')}>
             didn't have an account? <strong className="underline">sign up</strong>
           </Button>

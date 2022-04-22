@@ -1,21 +1,19 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import TextField from '../../components/atom/TextField';
-import { SearchIcon } from '../../components/icons';
-import Layout from '../../components/Layout';
-import TagCard from '../../components/organisms/TagCard';
-import { getTags } from '../../apis/tags/getAll/api';
-import { useGetTags } from '../../apis/tags/getAll/hook';
 import { useEffect, useState } from 'react';
-import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
+import debounce from 'lodash/debounce';
+
+import TextField from '@/components/atom/TextField';
+import { SearchIcon } from '@/components/icons';
+import Layout from '@/components/Layout';
+import TagCard from '@/components/organisms/TagCard';
+import { getTags } from '@/apis/tags/getAll';
+import { useGetTags } from '@/apis/tags/getAll';
 
 const Tags = ({ tagsInital }: { tagsInital: Tag[] }) => {
   const [search, setSearch] = useState();
-  const {
-    data: { data: tags },
-    refetch
-  } = useGetTags({ page: 1, search }, { data: tagsInital });
+  const { data: tags, refetch } = useGetTags({ page: 1, search }, tagsInital);
   const handleChangeSearchTags = debounce(e => {
     setSearch(e.target.value);
   }, 1000);
@@ -39,7 +37,8 @@ const Tags = ({ tagsInital }: { tagsInital: Tag[] }) => {
           onChange={handleChangeSearchTags}
         />
         {!isEmpty(tags) &&
-          tags.map((tag: Tag) => (
+          tags &&
+          tags.map(tag => (
             <TagCard
               key={tag.id}
               title={tag.title}
@@ -55,7 +54,8 @@ const Tags = ({ tagsInital }: { tagsInital: Tag[] }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const { data: tagsInital } = await getTags({ page: 1 });
+    const tagsInital = await getTags({ page: 1 });
+    console.log(tagsInital);
     return {
       props: {
         tagsInital

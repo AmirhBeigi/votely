@@ -3,11 +3,12 @@ import debounce from 'lodash/debounce';
 import { useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import TextField from '../../components/atom/TextField';
-import { SearchIcon } from '../../components/icons';
-import Layout from '../../components/Layout';
-import Box from '../../components/atom/Box';
-import Polls from '../../components/organisms/Polls';
+
+import TextField from '@/components/atom/TextField';
+import { SearchIcon } from '@/components/icons';
+import Layout from '@/components/Layout';
+import Box from '@/components/atom/Box';
+import Polls from '@/components/organisms/Polls';
 
 const UserPolls: NextPage = () => {
   const {

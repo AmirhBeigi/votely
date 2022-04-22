@@ -1,34 +1,32 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
-import TextField from '../components/atom/TextField';
-import { SearchIcon } from '../components/icons';
-import ActiveVoteBanner from '../components/organisms/ActiveVoteBanner';
-import Section from '../components/molecules/Section';
-import Box from '../components/atom/Box';
-import { useRouter } from 'next/router';
-import VoteCard from '../components/organisms/VoteCard';
-import Layout from '../components/Layout';
-import { motion } from 'framer-motion';
-import { getVotes } from '../apis/votes/getAll/api';
-import { getActiveCounts } from '../apis/votes/getActiveCounts/api';
-import TagCardCompact from '../components/organisms/TagCardCompact';
-import { getTags } from '../apis/tags/getAll/api';
-import { getBestTags } from '../apis/tags/best/api';
-import Polls from '../components/organisms/Polls';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import debounce from 'lodash/debounce';
+
+import TextField from '@/components/atom/TextField';
+import { SearchIcon } from '@/components/icons';
+import ActiveVoteBanner from '@/components/organisms/ActiveVoteBanner';
+import Section from '@/components/molecules/Section';
+import Layout from '@/components/Layout';
+import TagCardCompact from '@/components/organisms/TagCardCompact';
+import Polls from '@/components/organisms/Polls';
+import { DragSlider } from '@/components/atom/Slider/Slider';
+
+import { getActiveCounts } from '@/apis/votes/getAllActiveCounts';
+import { getBestTags } from '@/apis/tags/best';
 import { useUser } from '../contexts/user';
-import { DragSlider } from '../components/atom/Slider/Slider';
+import { getTags } from '@/apis/tags/getAll';
 
 interface Props {
-  tags: [];
-  activeCounts: number | null;
+  tags: Tag[];
+  activeCounts: number;
 }
 
 const Home: NextPage<Props> = ({ activeCounts, tags }) => {
   const router = useRouter();
   const [user] = useUser();
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState('');
   const onChangeSearchPolls = debounce(e => {
     setSearch(e.target.value);
   }, 1000);
@@ -55,7 +53,7 @@ const Home: NextPage<Props> = ({ activeCounts, tags }) => {
         )}
         <Section title="Top Categories" showAllAction={() => router.push('/tags')}>
           <DragSlider>
-            {tags.map((tag: Tag) => (
+            {tags.map(tag => (
               <TagCardCompact
                 key={tag.id}
                 title={tag.title}
@@ -75,12 +73,13 @@ const Home: NextPage<Props> = ({ activeCounts, tags }) => {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   try {
-    const { data: bestTags } = await getBestTags({ page: 1 });
-    let activeCounts;
-    if (context.req.cookies['votely.token']) {
-      const { data } = await getActiveCounts(context.req.cookies['votely.token']);
-      activeCounts = data.count;
-    }
+    const bestTags = await getTags({ page: 1 });
+    const activeCounts =
+      context.req.cookies?.['votely.token'] &&
+      (await (
+        await getActiveCounts(context.req.cookies['votely.token'])
+      ).data.count);
+
     return {
       props: {
         tags: bestTags,

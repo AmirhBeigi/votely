@@ -3,16 +3,16 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useRegister } from '../apis/auth/register/hook';
-import Box from '../components/atom/Box';
-import Button from '../components/atom/Button';
-import Text from '../components/atom/Text';
-import TextField from '../components/atom/TextField';
-import { GoogleIcon } from '../components/icons';
-import { Handshake } from '../components/illustrations';
-import Layout from '../components/Layout';
-import GoogleLoginButton from '../components/molecules/GoogleLoginButton';
-import PasswordField from '../components/molecules/PasswordField';
+
+import Box from '@/components/atom/Box';
+import Button from '@/components/atom/Button';
+import Text from '@/components/atom/Text';
+import TextField from '@/components/atom/TextField';
+import { Handshake } from '@/components/illustrations';
+import Layout from '@/components/Layout';
+import GoogleLoginButton from '@/components/molecules/GoogleLoginButton';
+import PasswordField from '@/components/molecules/PasswordField';
+import { useRegister } from '@/apis/auth/register';
 
 const Register: NextPage = () => {
   const router = useRouter();
@@ -22,21 +22,13 @@ const Register: NextPage = () => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-  const handleRegister = () => {
-    register.mutate(
-      {
-        username,
-        email,
-        password,
-        confirm_password: confirmPassword
-      },
-      {
-        onSuccess: () => {
-          router.push('/');
-        }
-      }
-    );
-  };
+  const handleRegister = () =>
+    register.mutate({
+      username,
+      email,
+      password,
+      confirm_password: confirmPassword
+    });
 
   return (
     <Layout shouldNotShowNavigationBar={true}>
@@ -81,7 +73,7 @@ const Register: NextPage = () => {
             </Button>
           </Box>
         </Box>
-        <Box className="flex flex-col space-y-3 w-full">
+        <Box className="flex flex-col space-y-1 w-full">
           <Button variant="text" onClick={() => router.push('/login')}>
             I'm have account. <strong className="underline">login</strong>
           </Button>

@@ -1,14 +1,15 @@
 import type { NextPage } from 'next';
+import Head from 'next/head';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import debounce from 'lodash/debounce';
 import isNaN from 'lodash/isNaN';
-import { useState } from 'react';
-import Head from 'next/head';
-import TextField from '../../components/atom/TextField';
-import { SearchIcon } from '../../components/icons';
-import Layout from '../../components/Layout';
-import Box from '../../components/atom/Box';
-import Polls from '../../components/organisms/Polls';
+
+import TextField from '@/components/atom/TextField';
+import { SearchIcon } from '@/components/icons';
+import Layout from '@/components/Layout';
+import Box from '@/components/atom/Box';
+import Polls from '@/components/organisms/Polls';
 
 const Tags: NextPage = () => {
   const {

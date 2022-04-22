@@ -1,11 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { getCookie } from 'cookies-next';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { useMe } from '../apis/auth/me/hook';
-
-interface User {
-  id?: number;
-}
-
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useMe } from '../apis/auth/me';
 interface PorviderType {
   children: React.ReactNode;
 }
@@ -26,14 +22,12 @@ export const UserProvider = (props: PorviderType) => {
 
   useEffect(() => {
     if (getCookie('votely.token')) refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (isSuccess) {
       setUser(me.data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
   return <UserContext.Provider value={[user, setUser]} {...props} />;

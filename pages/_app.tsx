@@ -2,9 +2,8 @@ import '../styles/fonts.css';
 import 'tailwindcss/tailwind.css';
 import type { AppProps } from 'next/app';
 import { AnimatePresence } from 'framer-motion';
-import Splash from '../components/Splash';
-import Provider from '../components/Provider';
-import { useMe } from '../apis/auth/me/hook';
+import Splash from '@/components/Splash';
+import Provider from '@/components/Provider';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

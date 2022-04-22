@@ -2,7 +2,7 @@ import { useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useRouter } from 'next/router';
 
-import { useGoogleLogin } from '../../../apis/auth/google/hook';
+import { useGoogleLogin } from '../../../apis/auth/googleLogin';
 import { GoogleIcon } from '../../icons';
 import Button from '../../atom/Button';
 import Box from '../../atom/Box';
@@ -13,8 +13,7 @@ export const GoogleLoginButton: React.FC = () => {
   const googleLogin = useGoogleLogin();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlLoginGoogleFailure = (error: any) => {
-    console.log(error);
+  const handlLoginGoogleFailure = () => {
     setIsLoading(false);
   };
 

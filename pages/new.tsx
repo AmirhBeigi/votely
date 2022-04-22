@@ -1,32 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
-import { useState, useEffect, useCallback, ImgHTMLAttributes, useId } from 'react';
+import { useState, useEffect, useCallback, ImgHTMLAttributes } from 'react';
 import Head from 'next/head';
-import Avatar from '../components/atom/Avatar';
-import Box from '../components/atom/Box';
-import Button from '../components/atom/Button';
-import Chips from '../components/atom/Chips';
-import Modal from '../components/atom/Modal';
-import Text from '../components/atom/Text';
-import TextField from '../components/atom/TextField';
-import { AddImageIcon, CheckIcon, CloseIcon, PlusIcon, SearchIcon } from '../components/icons';
-import Layout from '../components/Layout';
-import { Reorder } from 'framer-motion';
-import { useCreatePoll } from '../apis/votes/create/hook';
-import { useGetTags } from '../apis/tags/getAll/hook';
-import { Skeleton } from '../components/atom/Skeleton';
-import debounce from 'lodash/debounce';
-import CropImage from '../components/organisms/CropImage';
-import isEmpty from 'lodash/isEmpty';
-import { useUser } from '../contexts/user';
-import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { useCreateTag } from '../apis/tags/create/hook';
+import { Reorder } from 'framer-motion';
+import toast from 'react-hot-toast';
+import isEmpty from 'lodash/isEmpty';
+import debounce from 'lodash/debounce';
+import { useUser } from '../contexts/user';
+
+import Avatar from '@/components/atom/Avatar';
+import Box from '@/components/atom/Box';
+import Button from '@/components/atom/Button';
+import Chips from '@/components/atom/Chips';
+import Modal from '@/components/atom/Modal';
+import Text from '@/components/atom/Text';
+import TextField from '@/components/atom/TextField';
+import { AddImageIcon, CheckIcon, CloseIcon, PlusIcon, SearchIcon } from '@/components/icons';
+import Layout from '@/components/Layout';
+import { Skeleton } from '@/components/atom/Skeleton';
+import CropImage from '@/components/organisms/CropImage';
+import { useGetTags } from '@/apis/tags/getAll';
+import { useCreatePoll } from '@/apis/votes/create';
+import { useCreateTag } from '@/apis/tags/create';
 
 const NewPoll: NextPage = () => {
   const router = useRouter();
   const [user] = useUser();
-  const optionId = useId();
   const [tagsModal, setTagsModal] = useState(false);
   const [newTagModal, setNewTagModal] = useState(false);
   const [cropModal, setCropModal] = useState(false);
@@ -48,7 +48,7 @@ const NewPoll: NextPage = () => {
 
   useEffect(() => {
     tagsModal && getTags.refetch();
-  }, [tagsModal]);
+  }, [getTags, tagsModal]);
 
   const onChangeSearchTag = debounce(e => {
     setSearchTagValue(e.target.value);
@@ -65,7 +65,7 @@ const NewPoll: NextPage = () => {
           title
         })),
         cover: coverImage,
-        tag_ids: tags.map(({ id }: any): number => id)
+        tag_ids: tags.map(({ id }): number => id)
       });
       router.push(`/p/${id}`);
     } catch (error: any) {}
@@ -88,18 +88,11 @@ const NewPoll: NextPage = () => {
   };
 
   const removeOption = useCallback(
-    (index: number) => {
-      console.log(index);
-      console.log(options);
-      console.log(options.filter((_, i) => i !== index));
-      setOptions(options.filter((_, i) => i !== index));
-    },
+    (index: number) => setOptions(options.filter((_, i) => i !== index)),
     [options]
   );
 
   const addOption = useCallback(() => {
-    console.log(options);
-    console.log('optionId', optionId);
     setOptions([...options, { id: Math.random(), title: '' }]);
   }, [options]);
 
@@ -207,10 +200,10 @@ const NewPoll: NextPage = () => {
           </Box>
           {!isEmpty(tags) && (
             <Box className="flex max-h-[7rem] flex-wrap gap-2 overflow-auto">
-              {tags.map((tag: any) => (
+              {tags.map(tag => (
                 <Chips
                   key={tag.id}
-                  onClick={() => setTags(prev => prev.filter((t: any) => t.id !== tag.id))}
+                  onClick={() => setTags(prev => prev.filter(({ id }) => id !== tag.id))}
                 >
                   {tag.title}
                 </Chips>
@@ -250,17 +243,17 @@ const NewPoll: NextPage = () => {
             <span>Add New</span>
           </Chips>
           {getTags.isSuccess &&
-            getTags.data?.data &&
-            getTags.data?.data?.map((tag: Tag) => (
+            getTags.data &&
+            getTags.data.map((tag: Tag) => (
               <Chips
                 key={tag.id}
                 onClick={() =>
-                  tags.some(({ id }: any) => id === tag.id)
-                    ? setTags(prev => prev.filter((t: any) => t.id !== tag.id))
+                  tags.some(({ id }) => id === tag.id)
+                    ? setTags(prev => prev.filter(({ id }) => id !== tag.id))
                     : setTags((prev: Tag[]) => [...prev, tag])
                 }
               >
-                {tags.some(({ id }: any) => id === tag.id) && (
+                {tags.some(({ id }) => id === tag.id) && (
                   <CheckIcon color="#000" className="mr-1" />
                 )}
                 <span>{tag.title}</span>

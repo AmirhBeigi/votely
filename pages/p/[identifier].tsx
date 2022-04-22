@@ -1,28 +1,27 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Avatar from '../../components/atom/Avatar';
-import Box from '../../components/atom/Box';
-import Chips from '../../components/atom/Chips';
-import Option from '../../components/molecules/Option';
-import { getVote } from '../../apis/votes/getOne/api';
-import Layout from '../../components/Layout';
-import { useVote } from '../../apis/votes/vote/hook';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useUnVote } from '../../apis/votes/unVote/hook';
-import Button from '../../components/atom/Button';
-import { PlayIcon, StopIcon, TrashIcon } from '../../components/icons';
-import Text from '../../components/atom/Text';
-import { useUser } from '../../contexts/user';
-import { isEmpty } from 'lodash';
-import { useDeletePoll } from '../../apis/votes/delete/hook';
-import { useRouter } from 'next/router';
-import { useUpdatePoll } from '../../apis/votes/update/hook';
-import { copyTextToClipboard } from '../../utils/copyText';
+import isEmpty from 'lodash/isEmpty';
 import toast from 'react-hot-toast';
-import axios from 'axios';
-import { ogTemplate } from '../../utils/ogTemplate';
+import { useUser } from '../../contexts/user';
+
+import Avatar from '@/components/atom/Avatar';
+import Box from '@/components/atom/Box';
+import Chips from '@/components/atom/Chips';
+import Option from '@/components/molecules/Option';
+import { getVote } from '@/apis/votes/getOne';
+import Layout from '@/components/Layout';
+import { useVote } from '@/apis/votes/vote';
+import { useUnVote } from '@/apis/votes/unVote';
+import Button from '@/components/atom/Button';
+import { PlayIcon, StopIcon, TrashIcon } from '@/components/icons';
+import Text from '@/components/atom/Text';
+import { useDeletePoll } from '@/apis/votes/delete';
+import { useUpdatePoll } from '@/apis/votes/update';
+import { copyTextToClipboard } from '@/utils/copyText';
 
 interface Props {
   poll: Poll;
@@ -46,7 +45,7 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
 
   useEffect(() => {
     !isEmpty(user) && setIsUserOwnedPoll(poll.owner_id === user.id);
-  }, [user]);
+  }, [poll.owner_id, user]);
 
   const submitVote = (optionId: string) => {
     if (isUserVoted || isStoped) return;
@@ -82,7 +81,7 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
     );
   };
 
-  const handleDeletePoll = () => {
+  const handleDeletePoll = () =>
     deletePoll.mutate(
       {
         id: poll.id
@@ -91,7 +90,6 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
         onSuccess: () => router.replace('/')
       }
     );
-  };
 
   const handleStopPoll = () => {
     setIsStoped((prev: boolean) => !prev);

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 interface AvatarProps extends NativeDomProps<HTMLImageElement> {
   src: string;

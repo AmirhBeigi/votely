@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import { useGetVote } from '../../../apis/votes/getAll/hook';
+import { useGetVotes } from '../../../apis/votes/getAll';
 import Box from '../../atom/Box';
 import { Skeleton } from '../../atom/Skeleton';
 import Text from '../../atom/Text';
@@ -14,7 +14,7 @@ interface PollsProps {
 }
 
 export const Polls: React.FC<PollsProps> = ({ search, tagId, ownerId, isClosed }) => {
-  const { data, isSuccess, isError, isLoading } = useGetVote({
+  const { data, isSuccess, isError, isLoading } = useGetVotes({
     page: 1,
     search,
     tag_id: tagId,

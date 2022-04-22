@@ -1,18 +1,17 @@
 import type { NextPage } from 'next';
-import debounce from 'lodash/debounce';
 import { useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Layout from '../../components/Layout';
-import Box from '../../components/atom/Box';
-import { useUser } from '../../contexts/user';
-import Section from '../../components/molecules/Section';
-import Text from '../../components/atom/Text';
-import Button from '../../components/atom/Button';
-import PasswordField from '../../components/molecules/PasswordField';
-import { useChangePassword } from '../../apis/auth/changePassword/hook';
-import toast from 'react-hot-toast';
 import { removeCookies } from 'cookies-next';
+import { useUser } from '../../contexts/user';
+
+import Layout from '@/components/Layout';
+import Box from '@/components/atom/Box';
+import Section from '@/components/molecules/Section';
+import Text from '@/components/atom/Text';
+import Button from '@/components/atom/Button';
+import PasswordField from '@/components/molecules/PasswordField';
+import { useChangePassword } from '@/apis/auth/changePassword';
 
 const User: NextPage = () => {
   const router = useRouter();
@@ -22,16 +21,12 @@ const User: NextPage = () => {
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPasswords, setConfirmNewPassword] = useState<string>('');
 
-  const handleChangePassword = async () => {
-    try {
-      await changePassword.mutateAsync({
-        confirm_new_password: confirmNewPasswords,
-        new_password: newPassword,
-        current_password: oldPassword
-      });
-      toast('Password changed!');
-    } catch (error: any) {}
-  };
+  const handleChangePassword = () =>
+    changePassword.mutate({
+      confirm_new_password: confirmNewPasswords,
+      new_password: newPassword,
+      current_password: oldPassword
+    });
 
   const handleLogout = () => {
     removeCookies('votely.token');
