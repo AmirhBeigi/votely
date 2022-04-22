@@ -42,7 +42,7 @@ export const VoteCard: React.FC<VoteCardProps> = ({
             />
           </svg>
           <Text fontSize="sm" fontWeight="medium">
-            {votesCount} Voter
+            {votesCount} Voters
           </Text>
         </Box>
         <Box className="flex items-center space-x-1">

@@ -126,7 +126,7 @@ const NewPoll: NextPage<Props> = ({ poll }) => {
               />
             </svg>
             <Text fontSize="sm" fontWeight="medium">
-              {voterCount} Voter
+              {voterCount} Voters
             </Text>
           </Box>
           {poll.is_closed && !isUserOwnedPoll && (

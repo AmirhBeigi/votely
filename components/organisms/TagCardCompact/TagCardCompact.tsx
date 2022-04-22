@@ -24,7 +24,7 @@ export const TagCardCompact: React.FC<TagCardCompactProps> = ({
         {title}
       </Text>
       <Box className="flex items-center space-x-2">
-        <Text fontSize="sm">{pollsCount} polls</Text>
+        <Text fontSize="sm">{pollsCount} Polls</Text>
       </Box>
     </Box>
   );
