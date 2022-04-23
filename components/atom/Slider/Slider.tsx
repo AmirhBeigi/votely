@@ -74,3 +74,5 @@ export const DragSlider = ({ children, bounceStiffness = 100, bounceDamping = 10
     </SliderWrap>
   );
 };
+
+export default DragSlider;

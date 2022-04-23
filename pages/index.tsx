@@ -1,6 +1,7 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import debounce from 'lodash/debounce';
 
@@ -11,7 +12,7 @@ import Section from '@/components/molecules/Section';
 import Layout from '@/components/Layout';
 import TagCardCompact from '@/components/organisms/TagCardCompact';
 import Polls from '@/components/organisms/Polls';
-import { DragSlider } from '@/components/atom/Slider/Slider';
+const DragSlider = dynamic(() => import('@/components/atom/Slider/Slider'));
 
 import { useGetActiveCounts } from '@/apis/votes/getAllActiveCounts';
 import { useUser } from '../contexts/user';
