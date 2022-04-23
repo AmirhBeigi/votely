@@ -36,7 +36,7 @@ export const Heeader: React.FC = () => {
           VOTELY
         </Text>
         <Box
-          className={clsx('hidden lg:flex items-center space-x-2 opacity-50 cursor-pointer ', {
+          className={clsx('hidden lg:flex items-center space-x-2 opacity-60 cursor-pointer ', {
             '!opacity-100': isActiveCheck({ href: '/', exact: true })
           })}
           onClick={() => router.push('/')}
@@ -62,7 +62,7 @@ export const Heeader: React.FC = () => {
           </Text>
         </Box>
         <Box
-          className={clsx('hidden lg:flex items-center space-x-2 opacity-50 cursor-pointer', {
+          className={clsx('hidden lg:flex items-center space-x-2 opacity-60 cursor-pointer', {
             '!opacity-100': isActiveCheck({ href: '/tags' })
           })}
           onClick={() => router.push('/tags')}

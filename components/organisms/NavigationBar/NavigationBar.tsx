@@ -20,7 +20,7 @@ export const NavigationBar: React.FC = () => {
     <Box className="fixed bottom-0 left-0 min-h-[4.3rem] h-[4.3rem] w-full px-7 pr-8 bg-white flex justify-between shadow-[0_-30px_65px_-18px_rgba(0,0,0,0.2)] lg:hidden">
       <Box className="flex space-x-8">
         <Box
-          className={clsx('flex items-center space-x-2 opacity-50', {
+          className={clsx('flex items-center space-x-2 opacity-60', {
             '!opacity-100': isActiveCheck({ href: '/', exact: true })
           })}
           onClick={() => router.push('/')}
@@ -46,7 +46,7 @@ export const NavigationBar: React.FC = () => {
           </Text>
         </Box>
         <Box
-          className={clsx('flex items-center space-x-2 opacity-50', {
+          className={clsx('flex items-center space-x-2 opacity-60', {
             '!opacity-100': isActiveCheck({ href: '/tags' })
           })}
           onClick={() => router.push('/tags')}
