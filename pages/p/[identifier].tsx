@@ -109,8 +109,6 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
     <Layout>
       <Head>
         <title>{poll.title}</title>
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
       <main className="flex flex-col gap-5 pb-32">
@@ -137,7 +135,7 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
           {poll.is_closed && !isUserOwnedPoll && (
             <Box className="flex items-center space-x-2">
               <StopIcon color="#000" width="25" />
-              <Text>stoped poll</Text>
+              <Text>Poll Stopped</Text>
             </Box>
           )}
         </Box>
