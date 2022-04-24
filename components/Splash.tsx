@@ -30,9 +30,9 @@ export const Splash: React.FC = () => {
     if (getCookie('votely.token')) {
       !isLoading && setIsShowSplash(false);
     } else {
-      setTimeout(() => {
-        setIsShowSplash(false);
-      }, 1000);
+      // setTimeout(() => {
+      setIsShowSplash(false);
+      // }, 1000);
     }
   }, [isLoading]);
 
