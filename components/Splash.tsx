@@ -20,7 +20,7 @@ const splashAnimation = {
 
 export const Splash: React.FC = () => {
   const { isLoading } = useMe();
-  const [isShowSplash, setIsShowSplash] = useState(true);
+  const [isShowSplash, setIsShowSplash] = useState(getCookie('votely.token'));
 
   // useEffect(() => {
   //   console.log(isLoading);
@@ -31,7 +31,7 @@ export const Splash: React.FC = () => {
       !isLoading && setIsShowSplash(false);
     } else {
       // setTimeout(() => {
-      setIsShowSplash(false);
+      // setIsShowSplash(false);
       // }, 1000);
     }
   }, [isLoading]);
