@@ -8,7 +8,8 @@ const nextConfig = {
   },
   pwa: {
     dest: 'public'
-  }
+  },
+  optimizeFonts: false
 };
 
 module.exports = withPWA(nextConfig);
