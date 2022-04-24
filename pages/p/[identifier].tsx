@@ -111,7 +111,7 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
         <title>{poll.title}</title>
       </Head>
 
-      <main className="flex flex-col gap-5 pb-44">
+      <main className="flex flex-col gap-5 pb-44 md:w-[22rem] md:mx-auto">
         <Box className="flex justify-between items-center w-full">
           <Box className="flex items-center space-x-1">
             <svg
