@@ -22,15 +22,11 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [user] = useUser();
   const { data: activeCounts } = useGetActiveCounts();
-  const { data: tags, refetch } = useGetTags({ page: 1 });
+  const { data: tags } = useGetTags({ page: 1 }, null, true);
   const [search, setSearch] = useState('');
   const onChangeSearchPolls = debounce(e => {
     setSearch(e.target.value);
   }, 1000);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Layout>
