@@ -12,7 +12,7 @@ import Section from '@/components/molecules/Section';
 import Layout from '@/components/Layout';
 import TagCardCompact from '@/components/organisms/TagCardCompact';
 import Polls from '@/components/organisms/Polls';
-const DragSlider = dynamic(() => import('@/components/atom/Slider/Slider'));
+import DragSlider from '@/components/atom/Slider/Slider';
 
 import { useGetActiveCounts } from '@/apis/votes/getAllActiveCounts';
 import { useUser } from '../contexts/user';
