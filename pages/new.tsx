@@ -23,6 +23,7 @@ import CropImage from '@/components/organisms/CropImage';
 import { useGetTags } from '@/apis/tags/getAll';
 import { useCreatePoll } from '@/apis/votes/create';
 import { useCreateTag } from '@/apis/tags/create';
+import AvatarForUser from '@/components/molecules/AvatarForUser';
 
 const NewPoll: NextPage = () => {
   const router = useRouter();
@@ -193,7 +194,7 @@ const NewPoll: NextPage = () => {
             </Button>
           )}
           <Box className="flex items-center space-x-3">
-            <Avatar src="/jojo.jpg" />
+            <AvatarForUser username={user.username!} />
             <Text fontWeight="medium">{user.username}</Text>
           </Box>
           {!isEmpty(tags) && (

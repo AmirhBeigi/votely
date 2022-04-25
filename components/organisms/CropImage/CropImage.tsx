@@ -55,9 +55,7 @@ export const CropImage: React.FC<CropImageProps> = ({ src, output }) => {
       );
 
       canvas.toBlob((blob: Blob | null) => {
-        console.log(blob);
         if (blob) {
-          console.log('hij');
           let file = new File([blob], 'fileName.jpg', { type: 'image/jpeg' });
           output(file);
         }

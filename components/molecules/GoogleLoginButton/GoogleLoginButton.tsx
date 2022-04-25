@@ -37,8 +37,8 @@ export const GoogleLoginButton: React.FC = () => {
           variant="outlined"
           isLoading={isLoading}
           onClick={() => {
-            setIsLoading(true);
             onClick();
+            setIsLoading(true);
           }}
         >
           <Box className="flex justify-center space-x-2">

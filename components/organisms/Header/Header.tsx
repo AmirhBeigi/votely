@@ -1,4 +1,5 @@
 import Avatar from '@/components/atom/Avatar';
+import AvatarForUser from '@/components/molecules/AvatarForUser';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { useUser } from '../../../contexts/user';
@@ -107,7 +108,7 @@ export const Heeader: React.FC = () => {
           className="flex justify-center items-center cursor-pointer"
           onClick={handleShowProfile}
         >
-          {user && <Avatar src="/jojo.jpg" width={32} height={32} />}
+          {user && <AvatarForUser username={user.username!} width={32} height={32} />}
           {!user && (
             <Text fontSize="sm" fontWeight="medium" className="underline">
               Login/Register

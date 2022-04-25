@@ -17,6 +17,7 @@ import TextField from '@/components/atom/TextField';
 import { useUpdateUser } from '@/apis/users/update';
 import { EditIcon } from '@/components/icons';
 import { useLogout } from '@/apis/auth/logout';
+import AvatarForUser from '@/components/molecules/AvatarForUser';
 
 const User: NextPage = () => {
   const [user, setUser] = useUser();
@@ -61,8 +62,12 @@ const User: NextPage = () => {
       </Head>
 
       <Box className="space-y-5 pb-32">
-        <Box className="flex flex-col">
-          <Box className="flex space-x-1" onClick={() => setChangeUsernameModal(true)}>
+        <Box className="flex flex-col items-start">
+          <AvatarForUser username={user.username} width={80} height={80} />
+          <Box
+            className="flex space-x-1 mt-3 cursor-pointer"
+            onClick={() => setChangeUsernameModal(true)}
+          >
             <Text className="line-clamp-1" fontSize="lg" fontWeight="bold">
               {user.username}
             </Text>

@@ -23,6 +23,7 @@ import { useDeletePoll } from '@/apis/votes/delete';
 import { useUpdatePoll } from '@/apis/votes/update';
 import { copyTextToClipboard } from '@/utils/copyText';
 import Error from 'next/error';
+import AvatarForUser from '@/components/molecules/AvatarForUser';
 
 interface Props {
   poll: Poll;
@@ -189,7 +190,7 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
           className="flex items-center space-x-3 cursor-pointer"
           onClick={() => router.push(`/user/${poll.owner.username}`)}
         >
-          <Avatar src="/jojo.jpg" />
+          <AvatarForUser username={poll.owner.username!} />
           <Text fontWeight="medium">{poll.owner.username}</Text>
         </Box>
         <Box className="flex max-h-[7rem] flex-wrap gap-2 overflow-auto">
