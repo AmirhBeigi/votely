@@ -20,9 +20,7 @@ export const TagCardCompact: React.FC<TagCardCompactProps> = ({
       className="flex flex-col space-y-1 bg-[#F0F3F4] p-4 pr-10 rounded-lg cursor-pointer"
       onClick={() => router.push(`/tags/${identifier}`)}
     >
-      <Text fontWeight="medium" dir="auto">
-        {title}
-      </Text>
+      <Text fontWeight="medium">{title}</Text>
       <Box className="flex items-center space-x-2">
         <Text fontSize="sm">{pollsCount} Polls</Text>
       </Box>

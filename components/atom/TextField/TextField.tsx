@@ -16,6 +16,7 @@ export const TextField: React.FC<TextFieldProps> = props => {
         </div>
       )}
       <input
+        dir="auto"
         className={clsx(
           'h-14 border border-solid border-[#E1ECEF] rounded-md w-full px-4 outline-gray-300 placeholder:text-gray-300',
           {

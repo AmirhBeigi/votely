@@ -26,7 +26,8 @@
     "react-hot-toast": "^2.2.0",
     "react-image-crop": "^10.0.0",
     "react-query": "^4.0.0-beta.2",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.2",
+    "seed-color": "^2.0.1"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.3.1",

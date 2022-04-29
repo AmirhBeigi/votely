@@ -25,6 +25,7 @@ import { copyTextToClipboard } from '@/utils/copyText';
 import Error from 'next/error';
 import AvatarForUser from '@/components/molecules/AvatarForUser';
 import { useBackUrl } from 'contexts/backUrl';
+import seedColor from 'seed-color';
 
 interface Props {
   poll: Poll;
@@ -185,10 +186,10 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M6.947 2.21967C7.23989 2.51256 7.23989 2.98744 6.947 3.28033L4.56066 5.66667H13.75C17.2018 5.66667 20 8.46489 20 11.9167C20 15.3684 17.2018 18.1667 13.75 18.1667H10.0833C9.66912 18.1667 9.33333 17.8309 9.33333 17.4167C9.33333 17.0025 9.66912 16.6667 10.0833 16.6667H13.75C16.3734 16.6667 18.5 14.54 18.5 11.9167C18.5 9.29331 16.3734 7.16667 13.75 7.16667H4.56066L6.947 9.553C7.23989 9.8459 7.23989 10.3208 6.947 10.6137C6.6541 10.9066 6.17923 10.9066 5.88634 10.6137L2.21967 6.947C1.92678 6.6541 1.92678 6.17923 2.21967 5.88634L5.88634 2.21967C6.17923 1.92678 6.6541 1.92678 6.947 2.21967Z"
-                fill="#4466DF"
+                fill="#000"
               />
             </svg>
-            <Text className="text-[#4466DF] font-medium">Retract Vote</Text>
+            <Text className="font-medium">Retract Vote</Text>
           </Button>
         )}
         <Box
@@ -202,7 +203,14 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
           {poll.tags.map(tag => (
             <Link key={tag.id} href={`/tags/${tag.id}`}>
               <a>
-                <Chips>{tag.title}</Chips>
+                <Chips
+                  style={{
+                    color: seedColor(tag.title).toHex(),
+                    borderColor: seedColor(tag.title).toHex()
+                  }}
+                >
+                  {tag.title}
+                </Chips>
               </a>
             </Link>
           ))}

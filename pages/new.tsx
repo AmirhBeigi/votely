@@ -7,6 +7,8 @@ import { Reorder } from 'framer-motion';
 import toast from 'react-hot-toast';
 import isEmpty from 'lodash/isEmpty';
 import debounce from 'lodash/debounce';
+import seedColor from 'seed-color';
+import capitalize from 'lodash/capitalize';
 import { useUser } from '../contexts/user';
 
 import Avatar from '@/components/atom/Avatar';
@@ -202,6 +204,10 @@ const NewPoll: NextPage = () => {
               {tags.map(tag => (
                 <Chips
                   key={tag.id}
+                  style={{
+                    color: seedColor(tag.title).toHex(),
+                    borderColor: seedColor(tag.title).toHex()
+                  }}
                   onClick={() => setTags(prev => prev.filter(({ id }) => id !== tag.id))}
                 >
                   {tag.title}
@@ -246,6 +252,10 @@ const NewPoll: NextPage = () => {
             getTags.data.map((tag: Tag) => (
               <Chips
                 key={tag.id}
+                style={{
+                  color: seedColor(tag.title).toHex(),
+                  borderColor: seedColor(tag.title).toHex()
+                }}
                 onClick={() =>
                   tags.some(({ id }) => id === tag.id)
                     ? setTags(prev => prev.filter(({ id }) => id !== tag.id))
@@ -253,7 +263,7 @@ const NewPoll: NextPage = () => {
                 }
               >
                 {tags.some(({ id }) => id === tag.id) && (
-                  <CheckIcon color="#000" className="mr-1" />
+                  <CheckIcon color={seedColor(tag.title).toHex()} className="mr-1" />
                 )}
                 <span>{tag.title}</span>
               </Chips>
@@ -262,9 +272,19 @@ const NewPoll: NextPage = () => {
       </Modal>
       <Modal isOpen={newTagModal} onClose={() => setNewTagModal(false)}>
         <Box className="flex flex-col space-y-3">
-          <Text fontSize="sm" fontWeight="medium">
-            Name Tag
-          </Text>
+          <Box className="flex justify-between items-center">
+            <Text fontSize="sm" fontWeight="medium">
+              Name Tag
+            </Text>
+            {tagName && (
+              <Box
+                className="w-5 h-5 rounded-full"
+                style={{
+                  backgroundColor: seedColor(capitalize(tagName)).toHex()
+                }}
+              />
+            )}
+          </Box>
           <TextField placeholder="Programming" onChange={e => setTagName(e.currentTarget.value)} />
           <Button onClick={createTagAction} isLoading={createTag.isLoading}>
             Add

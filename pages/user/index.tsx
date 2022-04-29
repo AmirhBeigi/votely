@@ -107,7 +107,7 @@ const User: NextPage = () => {
       <Modal isOpen={changeUsernameModal} onClose={() => setChangeUsernameModal(false)}>
         <Box className="flex flex-col space-y-3">
           <Text fontSize="sm" fontWeight="medium">
-            username
+            Username
           </Text>
           <TextField
             placeholder="Programming"

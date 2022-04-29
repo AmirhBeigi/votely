@@ -19,7 +19,7 @@ export const TagCard: React.FC<TagsCardProps> = ({
   const router = useRouter();
   return (
     <Box
-      className="bg-[#F0F3F4] w-full p-5 space-y-2 rounded-lg cursor-pointer"
+      className="bg-[#F0F3F4] flex flex-col w-full p-5 space-y-2 rounded-lg cursor-pointer"
       onClick={() => router.push(`/tags/${identifier}`)}
     >
       <Text fontWeight="medium" dir="auto">
