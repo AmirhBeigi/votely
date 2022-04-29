@@ -230,7 +230,7 @@ const NewPoll: NextPage = () => {
           onChange={onChangeSearchTag}
         />
         <Box className="max-h-[16rem] py-5 flex flex-wrap gap-3 overflow-auto">
-          <Chips className="px-[0.4rem] pr-3" onClick={() => setNewTagModal(true)}>
+          <Chips className="!pl-[0.7rem]" onClick={() => setNewTagModal(true)}>
             <PlusIcon color="#000" className="w-6 h-6" />
             <span>New Tag</span>
           </Chips>

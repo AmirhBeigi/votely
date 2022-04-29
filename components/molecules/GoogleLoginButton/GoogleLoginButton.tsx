@@ -11,12 +11,9 @@ export const GoogleLoginButton: React.FC = () => {
   const googleLogin = useGoogleLogin();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlLoginGoogleFailure = () => {
-    setIsLoading(false);
-  };
-
   const handlLoginGoogleSuccess = async (data: any) => {
     try {
+      setIsLoading(true);
       await googleLogin.mutateAsync({
         access_token: data.accessToken
       });
@@ -35,7 +32,6 @@ export const GoogleLoginButton: React.FC = () => {
           isLoading={isLoading}
           onClick={() => {
             onClick();
-            setIsLoading(true);
           }}
         >
           <Box className="flex justify-center space-x-2">
@@ -44,9 +40,7 @@ export const GoogleLoginButton: React.FC = () => {
           </Box>
         </Button>
       )}
-      buttonText="Login"
       onSuccess={handlLoginGoogleSuccess}
-      onFailure={handlLoginGoogleFailure}
     />
   );
 };

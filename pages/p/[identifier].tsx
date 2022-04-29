@@ -151,7 +151,7 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
             width={100}
             height={150}
             alt={poll.title}
-            className="rounded-lg"
+            className="rounded-lg !border !border-solid !border-gray-100"
           />
         )}
         <Text dir="auto" fontWeight="bold" fontSize="lg">
