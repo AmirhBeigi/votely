@@ -248,7 +248,7 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
               <TrashIcon color="#000" />
               <Text>Delete Poll</Text>
             </Box>
-            <hr className="border border-solid border-[#F0F3F4] h-full" />
+            <hr className="border border-solid bg-[#F0F3F4] rounded-full border-[#F0F3F4] h-full" />
             <Box
               className="flex flex-col items-center space-y-2 cursor-pointer"
               onClick={handleStopPoll}
