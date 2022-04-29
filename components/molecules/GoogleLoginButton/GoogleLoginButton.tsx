@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import GoogleLogin from 'react-google-login';
-import { useRouter } from 'next/router';
 
 import { useGoogleLogin } from '../../../apis/auth/googleLogin';
 import { GoogleIcon } from '../../icons';
@@ -9,7 +8,6 @@ import Box from '../../atom/Box';
 import Text from '../../atom/Text';
 
 export const GoogleLoginButton: React.FC = () => {
-  const router = useRouter();
   const googleLogin = useGoogleLogin();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,7 +21,6 @@ export const GoogleLoginButton: React.FC = () => {
         access_token: data.accessToken
       });
       setIsLoading(false);
-      router.push('/');
     } catch (e) {
       setIsLoading(false);
     }

@@ -17,7 +17,7 @@ export const useLogout = () => {
       removeCookies('votely.token');
       removeCookies('votely.refresh_token');
       setUser(null);
-      router.push('/login');
+      router.push('/');
     }
   });
 };

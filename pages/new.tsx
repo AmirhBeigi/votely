@@ -193,7 +193,7 @@ const NewPoll: NextPage = () => {
               <Text fontWeight="medium">Add Option</Text>
             </Button>
           )}
-          <Box className="flex items-center space-x-3">
+          <Box className="flex items-center space-x-2">
             <AvatarForUser username={user.username!} />
             <Text fontWeight="medium">{user.username}</Text>
           </Box>
@@ -230,6 +230,10 @@ const NewPoll: NextPage = () => {
           onChange={onChangeSearchTag}
         />
         <Box className="max-h-[16rem] py-5 flex flex-wrap gap-3 overflow-auto">
+          <Chips className="px-[0.4rem] pr-3" onClick={() => setNewTagModal(true)}>
+            <PlusIcon color="#000" className="w-6 h-6" />
+            <span>New Tag</span>
+          </Chips>
           {getTags.isLoading && (
             <>
               <Skeleton w="6rem" h="2rem" className="rounded-full" />
@@ -237,10 +241,6 @@ const NewPoll: NextPage = () => {
               <Skeleton w="10rem" h="2rem" className="rounded-full" />
             </>
           )}
-          <Chips className="px-[0.5rem] pr-4" onClick={() => setNewTagModal(true)}>
-            <PlusIcon color="#000" className="w-6 h-6" />
-            <span>New Tag</span>
-          </Chips>
           {getTags.isSuccess &&
             getTags.data &&
             getTags.data.map((tag: Tag) => (

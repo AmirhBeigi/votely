@@ -2,6 +2,7 @@ import { UserProvider } from '../contexts/user';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import NextNProgress from 'nextjs-progressbar';
+import { BackUrlProvider } from 'contexts/backUrl';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,7 +36,9 @@ const Provider = ({ children }: PorviderType) => (
     />
     <NextNProgress height={6} color="#000" options={{ showSpinner: false }} />
     <QueryClientProvider client={queryClient}>
-      <UserProvider>{children}</UserProvider>
+      <UserProvider>
+        <BackUrlProvider>{children}</BackUrlProvider>
+      </UserProvider>
     </QueryClientProvider>
   </>
 );

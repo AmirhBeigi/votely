@@ -1,6 +1,7 @@
 import Avatar from '@/components/atom/Avatar';
 import AvatarForUser from '@/components/molecules/AvatarForUser';
 import clsx from 'clsx';
+import { useBackUrl } from 'contexts/backUrl';
 import { useRouter } from 'next/router';
 import { useUser } from '../../../contexts/user';
 import Box from '../../atom/Box';
@@ -9,18 +10,24 @@ import { PlusIcon } from '../../icons';
 
 export const Heeader: React.FC = () => {
   const [user] = useUser();
+  const [, setBackUrlUrl] = useBackUrl();
   const router = useRouter();
 
   const isActiveCheck = ({ href, exact }: { href: string; exact?: boolean }): boolean =>
     exact ? router.pathname === href : router.pathname.startsWith(href);
 
   const handleShowProfile = () => {
-    if (!user) return router.push('/login');
+    if (!user) {
+      return router.push('/login');
+    }
     router.push('/user');
   };
 
   const handleNagivateNewPoll = () => {
-    if (!user) return router.push('/login');
+    if (!user) {
+      setBackUrlUrl('/new');
+      return router.push('/login');
+    }
     router.push('/new');
   };
 

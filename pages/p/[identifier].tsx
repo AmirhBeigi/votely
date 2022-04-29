@@ -24,6 +24,7 @@ import { useUpdatePoll } from '@/apis/votes/update';
 import { copyTextToClipboard } from '@/utils/copyText';
 import Error from 'next/error';
 import AvatarForUser from '@/components/molecules/AvatarForUser';
+import { useBackUrl } from 'contexts/backUrl';
 
 interface Props {
   poll: Poll;
@@ -33,6 +34,7 @@ interface Props {
 const Poll: NextPage<Props> = ({ error, poll }) => {
   const router = useRouter();
   const [user] = useUser();
+  const [, setBackUrlUrl] = useBackUrl();
   const vote = useVote();
   const unVote = useUnVote();
   const deletePoll = useDeletePoll();
@@ -52,7 +54,10 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
 
   const submitVote = (optionId: string) => {
     if (isUserVoted || isStoped) return;
-    if (!user) return router.push('/login');
+    if (!user) {
+      setBackUrlUrl('/p/' + poll?.id);
+      return router.push('/login');
+    }
     vote.mutate(
       {
         id: poll.id,
@@ -187,7 +192,7 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
           </Button>
         )}
         <Box
-          className="flex items-center space-x-3 cursor-pointer"
+          className="flex items-center space-x-2 cursor-pointer"
           onClick={() => router.push(`/user/${poll.owner.username}`)}
         >
           <AvatarForUser username={poll.owner.username!} />

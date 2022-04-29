@@ -10,8 +10,8 @@ interface AvatarForUserProps extends NativeDomProps<HTMLImageElement> {
 
 export const AvatarForUser: React.FC<AvatarForUserProps> = ({
   username,
-  width = 42,
-  height = 42
+  width = 38,
+  height = 38
 }) => {
   let Svg = createAvatar(style, {
     seed: username,
