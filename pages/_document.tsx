@@ -27,16 +27,7 @@ const CustomDocument: NextComponentType = () => {
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icons/icon_x192.png" />
 
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:url" content="https://votely.vercel.app" />
-        <meta name="twitter:title" content="Votely" />
-        <meta name="twitter:description" content="Poll App" />
         <meta name="twitter:creator" content="@Amirhbeigi" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Votely" />
-        <meta property="og:description" content="Poll App" />
-        <meta property="og:site_name" content="Votely" />
-        <meta property="og:url" content="https://votely.vercel.app" />
       </Head>
       <body className="scrollbar-hide scroll-smooth">
         <Main />
