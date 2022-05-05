@@ -112,10 +112,17 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
     return <Error statusCode={error} />;
   }
 
+  const ogImage = `https://votely-og.vercel.app/${poll.short_identifier}?title=${poll.title}&optionsLength=${poll.options.length}&username=${poll.owner.username}`;
+
   return (
     <Layout>
       <Head>
         <title>{poll.title}</title>
+        <meta content={ogImage} property="og:image" name="image" />
+        <meta content={ogImage} property="twitter:image" />
+        <meta name="twitter:image" content={ogImage} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
       <main className="flex flex-col gap-5 pb-44 md:w-[22rem] md:mx-auto">
