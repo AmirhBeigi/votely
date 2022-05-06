@@ -32,6 +32,11 @@ const Home: NextPage = () => {
     <Layout>
       <Head>
         <title>Votely</title>
+        <meta content="/cover.png" property="og:image" name="image" />
+        <meta content="/cover.png" property="twitter:image" />
+        <meta name="twitter:image" content="/cover.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
       <main className="space-y-5 pb-32">

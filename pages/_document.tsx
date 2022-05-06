@@ -26,11 +26,6 @@ const CustomDocument: NextComponentType = () => {
         <link rel="manifest" href="/manifest.json" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icons/icon_x192.png" />
-        <meta content="/cover.png" property="og:image" name="image" />
-        <meta content="/cover.png" property="twitter:image" />
-        <meta name="twitter:image" content="/cover.png" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
 
         <meta name="twitter:creator" content="@Amirhbeigi" />
       </Head>
