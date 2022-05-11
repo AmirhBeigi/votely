@@ -23,8 +23,8 @@ export const useRegister = () => {
 
   return useMutation(register, {
     onSuccess: data => {
-      setCookies('votely.token', data.data.access_token, { maxAge: 60 * 60 * 24 });
-      setCookies('votely.refresh_token', data.data.refresh_token, { maxAge: 60 * 60 * 24 });
+      setCookies('votely.token', data.data.access_token, { maxAge: 31536000 });
+      setCookies('votely.refresh_token', data.data.refresh_token, { maxAge: 31536000 });
       setUser(data.data.user);
       router.push(backUrl ?? '/');
       setBackUrl(null);

@@ -27,7 +27,7 @@ httpClient.interceptors.response.use(
     if (error.response?.status === 401 && !excloudUrl.includes(originalRequest.url)) {
       try {
         const { access_token } = await refresh();
-        setCookies('votely.token', access_token, { maxAge: 60 * 60 * 24 });
+        setCookies('votely.token', access_token, { maxAge: 31536000 });
 
         return httpClient(originalRequest);
       } catch (error) {
