@@ -20,8 +20,8 @@ export const useGoogleLogin = () => {
 
   return useMutation(GoogleLogin, {
     onSuccess: data => {
-      setCookies('votely.token', data.data.access_token);
-      setCookies('votely.refresh_token', data.data.refresh_token);
+      setCookies('votely.token', data.data.access_token, { maxAge: 60 * 60 * 24 });
+      setCookies('votely.refresh_token', data.data.refresh_token, { maxAge: 60 * 60 * 24 });
       setUser(data.data.user);
       router.push(backUrl ?? '/');
       setBackUrl(null);
