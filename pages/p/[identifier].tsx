@@ -47,7 +47,7 @@ const Poll: NextPage<Props> = ({ error, poll }) => {
   );
   const [options, setOptions] = useState(poll?.options);
   const [isStoped, setIsStoped] = useState(poll?.is_closed);
-  const pollShareLink = `https://votely.vercel.app/p/${poll?.short_identifier}`;
+  const pollShareLink = `https://votely.zapdos.agency/p/${poll?.short_identifier}`;
 
   useEffect(() => {
     !isEmpty(user) && setIsUserOwnedPoll(poll?.owner_id === user.id);
